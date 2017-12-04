@@ -17,15 +17,24 @@ public class MongoDBTableCreation {
 	    MongoClient mongoClient = new MongoClient();
 	    MongoDatabase db = mongoClient.getDatabase(MongoDBUtil.DB_NAME);
 
-	    // Step 1: remove old tables.
+	    // Step 1: remove old collections.
 	    db.getCollection("users").drop();
 	    db.getCollection("books").drop();
 
-	    // Step 2: create new collections, populate data and create index.
+	    // Step 2: create new collections
 	    db.getCollection("users")
-	        .insertOne(new Document().append("email", "linxiaoran0210@gmail.com").append("universityID", "011824657")
-	            .append("password", "366462"));
-
+	        .insertOne(new Document().append("email", "linxiaoran0210@gmail.com").
+	        		append("universityID", "011824657").append("password", "366462"));
+	    
+	    // make sure email is unique.
+	    IndexOptions indexOptions = new IndexOptions().unique(true);
+	    // use 1 for ascending index , -1 for descending index
+	    // createIndex let search by "email"
+	    db.getCollection("users").createIndex(new Document("email", 1), indexOptions);
+	    
+	    // make sure book title is unique.
+	    // createIndex let search by "title"
+	    db.getCollection("books").createIndex(new Document("title", 1), indexOptions);
 
 	    mongoClient.close();
 	    System.out.println("Collection creation is done successfully.");
