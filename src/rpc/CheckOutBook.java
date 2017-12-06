@@ -27,11 +27,4 @@ public class CheckOutBook extends HttpServlet {
 
 	}
 
-	/**
-	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
-	 */
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-	}
-
 }
