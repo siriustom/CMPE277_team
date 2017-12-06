@@ -15,7 +15,7 @@ public class BookCatalog {
 	private String locationInLibrary;
 	private String keywords;
 	private String coverImage;
-	private User[] waitlist;
+	private String[] waitlist;
 	private String librarianCreatedUpdated;
 	private BookCopy[] copies;
 	
@@ -44,7 +44,7 @@ public class BookCatalog {
 	public String getCoverImage() {
 		return coverImage;
 	}
-	public User[] getWaitlist() {
+	public String[] getWaitlist() {
 		return waitlist;
 	}
 	public String getLibrarianCreatedUpdated() {
