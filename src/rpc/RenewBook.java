@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/RenewBook")
 public class RenewBook extends HttpServlet {
-	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
