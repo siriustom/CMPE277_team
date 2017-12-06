@@ -5,6 +5,8 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import db.MongoDBUtil;
+import entity.BookCatalog;
+import entity.BookCopy;
 import entity.User;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.List;
 public class UserService {
 
     private final static String COLLECTION_NAME = "users";
-    private final static String[] FIELDS = new String[]{"universityID","email","password"};
+    private final static String[] FIELDS = new String[]{"university_id","email","password","books"};
     private MongoDBUtil dbUtil = null;
 
     public List<User> queryAll(){
@@ -36,8 +38,22 @@ public class UserService {
         o.put(FIELDS[0],s.getUniversity_id());
         o.put(FIELDS[1], s.getEmail());
         o.put(FIELDS[2], s.getPassword());
-        //o.put(FIELDS[3], s.getBooks());
 
+
+        List<DBObject> objList = new ArrayList<DBObject>();
+        if(s.getBooks()!=null) {
+            for (BookCopy bc : s.getBooks()) {
+                DBObject obj = new BasicDBObject();
+                obj.put("status", bc.getStatus());
+                obj.put("user", bc.getUser());
+                obj.put("status", bc.getStatus());
+                obj.put("dueDate", bc.getDueDate());
+                obj.put("checkOutDate", bc.getCheckOutDate());
+                objList.add(obj);
+            }
+
+            o.put(FIELDS[3], objList);
+        }
         DBCollection collection = getDBCollection();
         //insert 与 save的区别，如果_id已存在，使用insert会报错，使用save，则新的替换旧的
         //	collection.insert(o);
@@ -52,7 +68,7 @@ public class UserService {
         DBObject o = new BasicDBObject();
         o.put(FIELDS[1], s.getEmail());
         o.put(FIELDS[2], s.getPassword());
-        //o.put(FIELDS[3], s.getBooks());
+        o.put(FIELDS[3], s.getBooks());
 
         DBCollection collection = getDBCollection();
         collection.update(q, o);
@@ -101,6 +117,25 @@ public class UserService {
 
     public static void main(String[] args){
         UserService us = new UserService();
+        BookCatalog catalog = new BookCatalog();
+        catalog.setAuthor("shihan");
+
+        BookCopy bc = new BookCopy();
+        bc.setDueDate(new java.util.Date());
+        bc.setStatus("Waiting List");
+        User user = new User();
+        user.setUniversity_id("006916367");
+        user.setEmail("shihan.wang2@sjsu.edu");
+        user.setPassword("123456");
+
+
+
+//        List<BookCopy> bcList = new ArrayList<BookCopy>();
+//        bcList.add(bc);
+//        user.setBooks(bcList);
+        us.add(user);
+
+
         System.out.println("Number of Users:"+us.queryAll().size());
     }
 }
