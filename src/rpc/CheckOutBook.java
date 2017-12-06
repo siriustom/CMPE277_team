@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class CheckOutBook
+ * Servlet handles book check out
  */
 @WebServlet("/CheckOutBook")
 public class CheckOutBook extends HttpServlet {

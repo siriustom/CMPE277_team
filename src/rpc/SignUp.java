@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class SignUp
+ * Servlet handles sign up process after sign up request
  */
 @WebServlet("/SignUp")
 public class SignUp extends HttpServlet {

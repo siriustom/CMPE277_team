@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class RenewBook
+ * Servlet handles borrowed book renew request
  */
 @WebServlet("/RenewBook")
 public class RenewBook extends HttpServlet {
