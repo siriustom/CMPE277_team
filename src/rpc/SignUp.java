@@ -14,6 +14,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
 import db.MongoDBUtil;
+import service.UserService;
 
 /**
  * Servlet handles sign up process after sign up request
@@ -21,13 +22,14 @@ import db.MongoDBUtil;
 @WebServlet("/SignUp")
 public class SignUp extends HttpServlet {
 	
-	private static final MongoClient mongoClient = new MongoClient("54.200.143.121", 27017);
+	private final UserService db;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public SignUp() {
         super();
+        db = new UserService();
     }
 
 	/**
@@ -36,12 +38,11 @@ public class SignUp extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			JSONObject msg = new JSONObject();
-			// get request parameters for userID and password
+			// get request parameters for universityID, email and password
 			String universityId = request.getParameter("university_id");
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
 			String verifyCode = request.getParameter("verification_code");
-			MongoDatabase db = mongoClient.getDatabase(MongoDBUtil.DB_NAME);
 			String message = "user has been signed up";
 			msg.put("status", "OK");
 			msg.put("msg", message);

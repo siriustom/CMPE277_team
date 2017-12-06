@@ -14,19 +14,21 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
 import db.MongoDBUtil;
+import service.UserService;
 
 /**
  * Servlet handles sign in
  */
 @WebServlet("/SignIn")
 public class SignIn extends HttpServlet {
-	private static final MongoClient mongoClient = new MongoClient("54.200.143.121", 27017);
+	private final UserService db;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public SignIn() {
         super();
-
+        db = new UserService();
     }
 
 	/**
@@ -38,7 +40,6 @@ public class SignIn extends HttpServlet {
 			// get request parameters for email and password
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
-			MongoDatabase db = mongoClient.getDatabase(MongoDBUtil.DB_NAME);
 			String message = "signed in successfully";
 			msg.put("status", "OK");
 			msg.put("msg", message);

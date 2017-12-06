@@ -15,20 +15,21 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
 import db.MongoDBUtil;
+import service.UserService;
 
 /**
  * A Servlet that handles a request for sign up
  */
 @WebServlet("/RequestSignUp")
 public class RequestSignUp extends HttpServlet {
-	private static final MongoClient mongoClient = new MongoClient("54.200.143.121", 27017);
+	private final UserService db;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public RequestSignUp() {
         super();
-
+        	db = new UserService();
     }
 
 	/**
@@ -38,10 +39,9 @@ public class RequestSignUp extends HttpServlet {
 
 		try {
 			JSONObject msg = new JSONObject();
-			// get request parameters for userID and password
+			// get request parameters for universityID and password
 			String universityId = request.getParameter("university_id");
 			String email = request.getParameter("email");
-			MongoDatabase db = mongoClient.getDatabase(MongoDBUtil.DB_NAME);
 			int code = codeGenerate();
 			String message = "verification code sent";
 			msg.put("status", "OK");

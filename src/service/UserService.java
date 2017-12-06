@@ -32,7 +32,8 @@ public class UserService {
         destory();
         return Users;
     }
-
+    
+    
     public void add(User s){
         DBObject o = new BasicDBObject();
         o.put(FIELDS[0],s.getUniversity_id());
@@ -41,7 +42,7 @@ public class UserService {
 
 
         List<DBObject> objList = new ArrayList<DBObject>();
-        if(s.getBooks()!=null) {
+        if(s.getBooks() != null) {
             for (BookCopy bc : s.getBooks()) {
                 DBObject obj = new BasicDBObject();
                 obj.put("status", bc.getStatus());
