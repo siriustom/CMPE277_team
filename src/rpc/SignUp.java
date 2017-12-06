@@ -28,14 +28,12 @@ public class SignUp extends HttpServlet {
      */
     public SignUp() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		try {
 			JSONObject msg = new JSONObject();
 			// get request parameters for userID and password
