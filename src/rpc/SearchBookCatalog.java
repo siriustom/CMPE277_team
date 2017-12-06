@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class SearchBook
+ * Servlet handles book catalog search
  */
 @WebServlet("/search")
 public class SearchBookCatalog extends HttpServlet {

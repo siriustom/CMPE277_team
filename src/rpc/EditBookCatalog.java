@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class EditBookCataLog
+ * Servlet handles book catalog editing
  */
 @WebServlet("/EditBookCataLog")
 public class EditBookCatalog extends HttpServlet {

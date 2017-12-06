@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class ReturnBook
+ * Servlet handles book returning
  */
 @WebServlet("/ReturnBook")
 public class ReturnBook extends HttpServlet {
