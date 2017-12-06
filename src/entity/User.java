@@ -2,17 +2,17 @@ package entity;
 
 public class User {
 
-    private String universityid;
+    private String university_id;
     private String email;
     private String password;
-    private BookCopy[] copies;
+    private BookCopy[] books;
 
-    public String getUniversityid() {
-        return universityid;
+    public String getUniversity_id() {
+        return university_id;
     }
 
-    public void setUniversityid(String universityid) {
-        this.universityid = universityid;
+    public void setUniversity_id(String university_id) {
+        this.university_id = university_id;
     }
 
     public String getEmail() {
@@ -31,11 +31,11 @@ public class User {
         this.password = password;
     }
 
-    public BookCopy[] getCopies() {
-        return copies;
+    public BookCopy[] getBooks() {
+        return books;
     }
 
-    public void setCopies(BookCopy[] copies) {
-        this.copies = copies;
+    public void setBooks(BookCopy[] books) {
+        this.books = books;
     }
 }
