@@ -1,10 +1,13 @@
 package db;
 
-import java.net.UnknownHostException;
-
 import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 
 public class MongoDBUtil {
 	public static final String DB_NAME = "library";
@@ -12,7 +15,7 @@ public class MongoDBUtil {
 	private final static String DB_HOST = "54.200.143.121";
 	private final static int DB_PORT = 27017;
 
-	private Mongo mg = null;
+	private MongoClient mg = null;
 	private DB db = null;
 	private DBCollection collection= null;
 
@@ -30,7 +33,7 @@ public class MongoDBUtil {
 	}
 	private  void init(){
 		try {
-			mg = new Mongo(DB_HOST,DB_PORT);
+			mg = new MongoClient(DB_HOST,DB_PORT);
 
 		} catch (Exception e) {
 			e.printStackTrace();
