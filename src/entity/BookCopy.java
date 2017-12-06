@@ -2,13 +2,17 @@ package entity;
 
 import java.util.Date;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class BookCopy {
 
     private String status;
-    private User user;
-    private Date due_date;
-    private Date check_out_date;
-    private int renew_count;
+    private String user;
+    private BookCatalog bookCatalog;
+    private Date dueDate;
+    private Date checkOutDate;
+    private int renewCount;
 
     public String getStatus() {
         return status;
@@ -18,35 +22,50 @@ public class BookCopy {
         this.status = status;
     }
 
-    public User getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
-    public Date getDue_date() {
-        return due_date;
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    public void setDue_date(Date due_date) {
-        this.due_date = due_date;
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public Date getCheck_out_date() {
-        return check_out_date;
+    public Date getCheckOutDate() {
+        return checkOutDate;
     }
 
-    public void setCheck_out_date(Date check_out_date) {
-        this.check_out_date = check_out_date;
+    public void setCheckOutDate(Date checkOutDate) {
+        this.checkOutDate = checkOutDate;
     }
 
-    public int getRenew_count() {
-        return renew_count;
+    public int getRenewCount() {
+        return renewCount;
     }
 
-    public void setRenew_count(int renew_count) {
-        this.renew_count = renew_count;
+    public void setRenewCount(int renewCount) {
+        this.renewCount = renewCount;
     }
+    
+    public JSONObject toJSONObject() {
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("status", status);
+			obj.put("user", user);
+			obj.put("bookCatalog", bookCatalog);
+			obj.put("dueDate", dueDate);
+			obj.put("checkOutDate", checkOutDate);
+			obj.put("renewCount", renewCount);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return obj;
+	}
 }

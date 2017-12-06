@@ -53,4 +53,24 @@ public class BookCatalog {
 	public BookCopy[] getCopies() {
 		return copies;
 	}
+	
+	public JSONObject toJSONObject() {
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("author", author);
+			obj.put("title", title);
+			obj.put("callNumber", callNumber);
+			obj.put("publisher", publisher);
+			obj.put("yearOfPublication", yearOfPublication);
+			obj.put("locationInLibrary", locationInLibrary);
+			obj.put("keywords", keywords);
+			obj.put("coverImage", coverImage);
+			obj.put("waitlist", waitlist);
+			obj.put("librarianCreatedUpdated", librarianCreatedUpdated);
+			obj.put("copies", copies);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return obj;
+	}
 }
