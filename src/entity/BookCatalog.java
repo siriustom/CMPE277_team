@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.List;
 import java.util.Set;
 
 import org.json.JSONArray;
@@ -15,7 +16,7 @@ public class BookCatalog {
 	private String locationInLibrary;
 	private String keywords;
 	private String coverImage;
-	private String[] waitlist;
+	private List<String> waitlist;
 	private String librarianCreatedUpdated;
 	private BookCopy[] copies;
 	
@@ -44,7 +45,7 @@ public class BookCatalog {
 	public String getCoverImage() {
 		return coverImage;
 	}
-	public String[] getWaitlist() {
+	public List<String> getWaitlist() {
 		return waitlist;
 	}
 	public String getLibrarianCreatedUpdated() {

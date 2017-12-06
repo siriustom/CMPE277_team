@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,7 +10,7 @@ public class User {
     private String university_id;
     private String email;
     private String password;
-    private BookCopy[] books;
+    private List<BookCopy> books;
 
     public String getUniversity_id() {
         return university_id;
@@ -34,11 +36,11 @@ public class User {
         this.password = password;
     }
 
-    public BookCopy[] getBooks() {
+    public List<BookCopy> getBooks() {
         return books;
     }
 
-    public void setBooks(BookCopy[] books) {
+    public void setBooks(List<BookCopy> books) {
         this.books = books;
     }
     
