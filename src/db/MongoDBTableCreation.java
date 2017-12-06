@@ -14,7 +14,7 @@ import db.MongoDBUtil;
 public class MongoDBTableCreation {
 	// Run as Java application to create MongoDB tables with index.
 	  public static void main(String[] args) throws ParseException {
-	    MongoClient mongoClient = new MongoClient();
+	    MongoClient mongoClient = new MongoClient("54.200.143.121", 27017);
 	    MongoDatabase db = mongoClient.getDatabase(MongoDBUtil.DB_NAME);
 
 	    // Step 1: remove old collections.
