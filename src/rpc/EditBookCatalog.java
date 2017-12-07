@@ -51,7 +51,7 @@ public class EditBookCatalog extends HttpServlet {
 			String coverImage = (String) input.get("coverImage");
 			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
 			String copies = (String) input.get("copies");
-			String message = "this book catalog has been created or updated";
+			String message = "this book catalog has been updated";
 			
 			//communicate to db
 			BookCatalogBuilder builder = new BookCatalogBuilder();

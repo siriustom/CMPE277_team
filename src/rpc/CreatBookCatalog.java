@@ -19,7 +19,7 @@ import entity.BookCatalog.BookCatalogBuilder;
 import service.BookCatalogService;
 
 /**
- * Servlet implementation class CreatBookCatalog
+ * Servlet handles book catalog creation
  */
 @WebServlet("/CreatBookCatalog")
 public class CreatBookCatalog extends HttpServlet {
@@ -51,7 +51,7 @@ public class CreatBookCatalog extends HttpServlet {
 			String coverImage = (String) input.get("coverImage");
 			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
 			String copies = (String) input.get("copies");
-			String message = "this book catalog has been created or updated";
+			String message = "this book catalog has been created";
 			
 			//communicate to db
 			BookCatalogBuilder builder = new BookCatalogBuilder();
