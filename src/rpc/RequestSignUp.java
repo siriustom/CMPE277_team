@@ -52,14 +52,18 @@ public class RequestSignUp extends HttpServlet {
 			// get request parameters for universityID and password
 			String universityId = request.getParameter("university_id");
 			String email = request.getParameter("email");
+			int atSign = email.indexOf("@");
 			
 			List<String> listOfEmail = db.queryByEmail(email);
+			int atSignStore = listOfEmail.get(0).indexOf("@");
 			if (listOfEmail.size() >= 2) {
 				String deny = "you cannot have more than two accounts.";
 				msg.put("status", "error");
 				msg.put("msg", deny);
 				RpcHelper.writeJsonObject(response, msg);
-			} else if (listOfEmail.size() == 1) {
+			} else if (listOfEmail.size() == 1 && 
+					(email.substring(atSign + 1) == "sjsu" && listOfEmail.get(0).substring(atSignStore + 1) == "sjsu" ||
+					email.substring(atSign + 1) != "sjsu" && listOfEmail.get(0).substring(atSignStore + 1) != "sjsu")) {
 				String moreThanOne = "you cannot have more than one account in certain email domain.";
 				msg.put("status", "error");
 				msg.put("msg", moreThanOne);
