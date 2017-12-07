@@ -54,6 +54,7 @@ public class RequestSignUp extends HttpServlet {
 			String email = request.getParameter("email");
 			int atSign = email.indexOf("@");
 			
+			// communicate to db
 			List<String> listOfEmail = db.queryByEmail(email);
 			int atSignStore = listOfEmail.get(0).indexOf("@");
 			if (listOfEmail.size() >= 2) {

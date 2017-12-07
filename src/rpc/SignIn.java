@@ -40,6 +40,10 @@ public class SignIn extends HttpServlet {
 			// get request parameters for email and password
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
+			
+			//communicate to db
+			
+			
 			String message = "signed in successfully";
 			msg.put("status", "OK");
 			msg.put("msg", message);

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,9 +35,14 @@ public class SearchBookCatalog extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			JSONObject msg = new JSONObject();
+
 			// get request parameters for book title
 			String title = request.getParameter("title");
-			String message = "";
+			
+			//communicate to db
+			
+			
+			String message = "all bookcatalogs has been returned";
 			msg.put("status", "OK");
 			msg.put("bookcatalog", "");
 			msg.put("msg", message);
