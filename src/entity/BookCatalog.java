@@ -59,7 +59,9 @@ public class BookCatalog {
 	}
 
 	public BookCatalog(){}
-
+	
+	
+	//Setters
 	public void setAuthor(String author) {
 		this.author = author;
 	}

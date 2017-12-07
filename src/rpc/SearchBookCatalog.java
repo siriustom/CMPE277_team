@@ -1,6 +1,8 @@
 package rpc;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +15,8 @@ import org.json.JSONObject;
 
 import com.mongodb.MongoClient;
 
+import entity.BookCatalog;
+import service.BookCatalogService;
 import service.UserService;
 
 /**
@@ -20,13 +24,13 @@ import service.UserService;
  */
 @WebServlet("/search")
 public class SearchBookCatalog extends HttpServlet {
-	private final UserService db;  
+	private final BookCatalogService db;  
     /**
      * @see HttpServlet#HttpServlet()
      */
     public SearchBookCatalog() {
         super();
-        db = new UserService();
+        db = new BookCatalogService();
     }
 
 	/**
@@ -41,11 +45,12 @@ public class SearchBookCatalog extends HttpServlet {
 			String title = request.getParameter("title");
 			
 			//communicate to db
+			List<BookCatalog> booklist = db.queryAll();
 			
-			
+			//response
 			String message = "all bookcatalogs has been returned";
 			msg.put("status", "OK");
-			msg.put("bookcatalog", "");
+			msg.put("bookcatalog", booklist);
 			msg.put("msg", message);
 			RpcHelper.writeJsonObject(response, msg);
 		} catch (JSONException e) {

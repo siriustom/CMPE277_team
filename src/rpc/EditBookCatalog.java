@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import service.BookCatalogService;
 import service.UserService;
 
 /**
@@ -17,13 +18,13 @@ import service.UserService;
  */
 @WebServlet("/EditBookCataLog")
 public class EditBookCatalog extends HttpServlet {
-    private final UserService db;
+    private final BookCatalogService db;
     /**
      * @see HttpServlet#HttpServlet()
      */
     public EditBookCatalog() {
         super();
-        	db = new UserService();
+        	db = new BookCatalogService();
     }
 
 	/**
@@ -34,8 +35,22 @@ public class EditBookCatalog extends HttpServlet {
 			JSONObject msg = new JSONObject();
 			// get request parameters for book title and update fields
 			JSONObject input = RpcHelper.readJsonObject(request);
+			String author = (String) input.get("author");
 			String title = (String) input.get("title");
-			String message = "";
+			String callNumber = (String) input.get("callNumber");
+			String publisher = (String) input.get("publisher");
+			String yearOfPub = (String) input.get("yearOfPub");
+			String location = (String) input.get("location");
+			String keywords = (String) input.get("keywords");
+			String coverImage = (String) input.get("coverImage");
+			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
+			String copies = (String) input.get("copies");
+			String message = "this book catalog has been created or updated";
+			
+			//communicate to db
+			
+			
+			//response
 			msg.put("status", "OK");
 			msg.put("msg", message);
 			RpcHelper.writeJsonObject(response, msg);
