@@ -8,57 +8,43 @@ import db.MongoDBUtil;
 import entity.BookCatalog;
 import entity.BookCopy;
 import entity.User;
-import java.util.Map;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by shishi on 12/5/17.
  */
-public class UserService {
+public class BookCatalogService {
 
-    private final static String COLLECTION_NAME = "users";
+    private final static String COLLECTION_NAME = "books";
     private MongoDBUtil dbUtil = null;
 
-    public List<User> queryAll(){
-        List<User> Users = new ArrayList<User>();
+    public List<BookCatalog> queryAll(){
+        List<BookCatalog> catalogs = new ArrayList<BookCatalog>();
         DBCollection collection = getDBCollection();
         DBCursor cursor = collection.find();
         while(cursor.hasNext()){
             DBObject dbObject = cursor.next();
-            Users.add(new User(dbObject));
+            catalogs.add(new BookCatalog(dbObject));
         }
         destory();
-        return Users;
+        return catalogs;
     }
 
-    public User queryById(String email){
-        User result = null;
+    public BookCatalog queryById(String title){
+        BookCatalog result = null;
         DBCollection collection = getDBCollection();
         BasicDBObject query=new BasicDBObject();
-        query.put("email",email);
-        DBObject userObj = collection.findOne(query);
-        result = new User(userObj);
+        query.put("title",title);
+        DBObject catalogObj = collection.findOne(query);
+        result = new BookCatalog(catalogObj);
         destory();
         return result;
     }
 
-
-    public List<String> queryByEmail(String email){
-        List<String> results = new ArrayList<String>();
-        DBCollection collection = getDBCollection();
-        BasicDBObject query=new BasicDBObject();
-        query.put("email",email);
-        DBCursor cursor = collection.find(query);
-        while(cursor.hasNext()){
-            DBObject dbObject = cursor.next();
-            results.add(String.valueOf(dbObject.get("email")));
-        }
-        destory();
-        return results;
-    }
     
-    public void add(User s){
+    public void add(BookCatalog s){
 
         DBObject o = s.toDBObject();
         DBCollection collection = getDBCollection();
@@ -68,9 +54,9 @@ public class UserService {
         destory();
     }
 
-    public void update(User s){
+    public void update(BookCatalog s){
         DBObject q = new BasicDBObject();
-        q.put("email",s.getEmail());
+        q.put("title",s.getTitle());
 
         DBObject o = s.toDBObject();
         DBCollection collection = getDBCollection();
@@ -78,10 +64,10 @@ public class UserService {
         destory();
     }
 
-    public void remove(String email){
+    public void remove(String title){
         DBCollection collection = getDBCollection();
         DBObject o = new BasicDBObject();
-        o.put("email",email);
+        o.put("title",title);
         collection.remove(o);
         destory();
     }
@@ -93,17 +79,7 @@ public class UserService {
         return dbUtil.getDBConllection(COLLECTION_NAME);
     }
 
-    private User convert(DBObject dbObject){
-        if(dbObject==null){
-            return null;
-        }
-        User s = new User();
-        s.setUniversity_id(dbObject.get("university_id").toString());
-        s.setEmail(dbObject.get("email").toString());
-        s.setPassword(dbObject.get("password").toString());
-        //s.setBooks(dbObject.get(FIELDS[3]));
-        return s;
-    }
+
 
 //    private boolean isUser(DBObject dbObject){
 //        for(String field : FIELDS){
@@ -119,7 +95,7 @@ public class UserService {
     }
 
     public static void main(String[] args){
-        UserService us = new UserService();
+        BookCatalogService us = new BookCatalogService();
         BookCatalog catalog = new BookCatalog();
         catalog.setTitle("Title1");
         catalog.setAuthor("Shihan");
@@ -138,8 +114,8 @@ public class UserService {
         user.setBooks(bcList);
 
         //us.add(user);
-        User uss = us.queryById("shihan.wang6@sjsu.edu");
+        //User uss = us.queryById("shihan.wang6@sjsu.edu");
 
-        System.out.println(uss.getBooks().get(0).getBookCatalog().getTitle());
+        //System.out.println(uss.getBooks().get(0).getBookCatalog().getTitle());
     }
 }
