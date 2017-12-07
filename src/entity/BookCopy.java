@@ -13,8 +13,8 @@ public class BookCopy{
 
     private String copyId;
     private String status;
-    private String user;//email
-    private BookCatalog bookCatalog;
+    private String user;
+    private String bookCatalog;
     private Date dueDate;
     private Date checkOutDate;
     private int renewCount;
@@ -25,7 +25,7 @@ public class BookCopy{
     public BookCopy(BookCatalog bookCatalog) {
     		this.status = "available";
     		this.user = "";
-    		this.bookCatalog = bookCatalog;
+    		this.bookCatalog = bookCatalog.getTitle();
     		this.renewCount = 3;
     }
     
@@ -69,11 +69,11 @@ public class BookCopy{
         this.renewCount = renewCount;
     }
 
-    public BookCatalog getBookCatalog() {
+    public String getBookCatalog() {
         return bookCatalog;
     }
 
-    public void setBookCatalog(BookCatalog bookCatalog) {
+    public void setBookCatalog(String bookCatalog) {
         this.bookCatalog = bookCatalog;
     }
 
@@ -107,7 +107,7 @@ public class BookCopy{
             obj.put("copyId", copyId);
             obj.put("status", status);
             obj.put("user", user);
-            obj.put("bookCatalog", bookCatalog.toDBObject());
+            obj.put("bookCatalog", bookCatalog);
             obj.put("dueDate", dueDate);
             obj.put("checkOutDate", checkOutDate);
             obj.put("renewCount", renewCount);
@@ -127,10 +127,11 @@ public class BookCopy{
             this.dueDate = new Date(String.valueOf(dbObject.get("dueDate")));
         if(dbObject.get("checkOutDate")!=null)
             this.checkOutDate = new Date(String.valueOf(dbObject.get("checkOutDate")));
-        DBObject catalogObj = (DBObject)dbObject.get("bookCatalog");
-        if(catalogObj!=null){
-
-            this.setBookCatalog(new BookCatalog(catalogObj));
-        }
+        this.bookCatalog = String.valueOf(dbObject.get("bookCatalog"));
+//        DBObject catalogObj = (DBObject)dbObject.get("bookCatalog");
+//        if(catalogObj!=null){
+//
+//            this.setBookCatalog(new BookCatalog(catalogObj));
+//        }
     }
 }

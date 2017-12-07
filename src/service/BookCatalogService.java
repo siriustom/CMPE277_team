@@ -106,27 +106,19 @@ public class BookCatalogService {
     }
 
     public static void main(String[] args){
-        BookCatalogService us = new BookCatalogService();
+        BookCatalogService bcs = new BookCatalogService();
         BookCatalog catalog = new BookCatalog();
-        catalog.setTitle("Title1");
+        catalog.setTitle("Title6");
         catalog.setAuthor("Shihan");
 
-        BookCopy bc = new BookCopy();
-        bc.setDueDate(new java.util.Date());
-        bc.setStatus("Waiting List");
-        bc.setBookCatalog(catalog);
+        BookCopy bc = new BookCopy(catalog);
 
-        User user = new User();
-        user.setUniversity_id("006916370");
-        user.setEmail("shihan.wang9@sjsu.edu");
-        user.setPassword("123456");
-        List<BookCopy> bcList = new ArrayList<BookCopy>();
-        bcList.add(bc);
-        user.setBooks(bcList);
+        for(int i=0;i<10;i++)
+            catalog.getCopies().add(bc);
 
         //us.add(user);
-        //User uss = us.queryById("shihan.wang6@sjsu.edu");
+        bcs.add(catalog);
 
-        //System.out.println(uss.getBooks().get(0).getBookCatalog().getTitle());
+        System.out.println("Number of Catalogs: "+bcs.queryAll().size());
     }
 }

@@ -5,6 +5,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import db.MongoDBUtil;
+import entity.BookCatalog;
 import entity.BookCopy;
 import entity.BookCopy;
 import entity.User;
@@ -43,7 +44,18 @@ public class BookCopyService {
         return result;
     }
 
-    
+
+    public void addCopies(List<BookCopy> copyList){
+        if(copyList!=null && copyList.size()>0){
+            DBCollection collection = getDBCollection();
+            for(BookCopy copy:copyList){
+                collection.save(copy.toDBObject());
+            }
+            destory();
+        }
+
+    }
+
     public void add(BookCopy s){
 
         DBObject o = s.toDBObject();
@@ -92,6 +104,22 @@ public class BookCopyService {
     private void destory(){
         if(dbUtil != null)
             dbUtil.destory();
+    }
+
+    public static void main(String[] args){
+        BookCopyService bcs = new BookCopyService();
+        BookCatalog catalog = new BookCatalog();
+        catalog.setTitle("Title11");
+        catalog.setAuthor("Shihan");
+
+        BookCopy bc = new BookCopy(catalog);
+        for(int i=0;i<10;i++)
+            catalog.getCopies().add(bc);
+
+
+        bcs.addCopies(catalog.getCopies());
+
+        System.out.println("Number of Copies: "+bcs.queryAll().size());
     }
 
 

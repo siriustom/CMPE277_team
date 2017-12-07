@@ -138,7 +138,7 @@ public class UserService {
         BookCopy bc = new BookCopy();
         bc.setDueDate(new java.util.Date());
         bc.setStatus("Waiting List");
-        bc.setBookCatalog(catalog);
+        //bc.setBookCatalog(catalog);
 
         User user = new User();
         user.setUniversity_id("006916370");
@@ -151,6 +151,6 @@ public class UserService {
         us.add(user);
         User uss = us.queryById("shihan.wang11@sjsu.edu");
         //System.out.println(us.verifySignIn("shihan.wang6@sjsu.edu","123456"));
-        System.out.println(uss.getBooks().get(0).getBookCatalog().getTitle());
+       // System.out.println(uss.getBooks().get(0).getBookCatalog().getTitle());
     }
 }
