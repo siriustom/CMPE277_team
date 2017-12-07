@@ -113,7 +113,7 @@ public class RequestSignUp extends HttpServlet {
 	
 	private void sendEmail(String code, String to) {
 		// send email
-		String from = "zeningdeng@gmail.com";
+		String from = "zeningdeng2@gmail.com";
 		String host = "server";
 		Properties properties = System.getProperties();
 		properties.setProperty("mail.smtp.host", host);

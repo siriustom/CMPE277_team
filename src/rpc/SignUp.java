@@ -14,6 +14,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
 import db.MongoDBUtil;
+import entity.User;
 import service.UserService;
 
 /**
@@ -36,15 +37,21 @@ public class SignUp extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json");
 		try {
 			JSONObject msg = new JSONObject();
 			// get request parameters for universityID, email and password
-			String universityId = request.getParameter("university_id");
-			String email = request.getParameter("email");
-			String password = request.getParameter("password");
+			JSONObject input = RpcHelper.readJsonObject(request);
+			String universityId = (String) input.get("university_id");
+			String email = (String) input.get("email");
+			String password = (String) input.get("password");
 			
 			//communicate to database
-			
+			User user = new User();
+			user.setUniversity_id(universityId);
+			user.setEmail(email);
+			user.setPassword(password);
+			db.add(user);
 			//write response
 			String message = "user has been signed up";
 			msg.put("status", "OK");
