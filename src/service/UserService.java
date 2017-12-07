@@ -142,15 +142,15 @@ public class UserService {
 
         User user = new User();
         user.setUniversity_id("006916370");
-        user.setEmail("shihan.wang9@sjsu.edu");
+        user.setEmail("shihan.wang12@sjsu.edu");
         user.setPassword("123456");
         List<BookCopy> bcList = new ArrayList<BookCopy>();
         bcList.add(bc);
         user.setBooks(bcList);
 
-        //us.add(user);
-        User uss = us.queryById("shihan.wang6@sjsu.edu");
-        System.out.println(us.verifySignIn("shihan.wang6@sjsu.edu","123456"));
+        us.add(user);
+        User uss = us.queryById("shihan.wang11@sjsu.edu");
+        //System.out.println(us.verifySignIn("shihan.wang6@sjsu.edu","123456"));
         System.out.println(uss.getBooks().get(0).getBookCatalog().getTitle());
     }
 }

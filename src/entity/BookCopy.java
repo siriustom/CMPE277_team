@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 public class BookCopy{
 
+    private String copyId;
     private String status;
     private String user;
     private BookCatalog bookCatalog;
@@ -76,10 +77,19 @@ public class BookCopy{
         this.bookCatalog = bookCatalog;
     }
 
+    public String getCopyId() {
+        return copyId;
+    }
+
+    public void setCopyId(String copyId) {
+        this.copyId = copyId;
+    }
+
     public JSONObject toJSONObject() {
 		JSONObject obj = new JSONObject();
 		try {
-			obj.put("status", status);
+            obj.put("copyId", copyId);
+		    obj.put("status", status);
 			obj.put("user", user);
 			obj.put("bookCatalog", bookCatalog);
 			obj.put("dueDate", dueDate);
@@ -94,6 +104,7 @@ public class BookCopy{
     public DBObject toDBObject() {
         DBObject obj = new BasicDBObject();
         try {
+            obj.put("copyId", copyId);
             obj.put("status", status);
             obj.put("user", user);
             obj.put("bookCatalog", bookCatalog.toDBObject());
@@ -108,12 +119,14 @@ public class BookCopy{
 
     public BookCopy(DBObject dbObject) {
         //super();
+        this.status = String.valueOf(dbObject.get("copyId"));
         this.status = String.valueOf(dbObject.get("status"));
         this.user = String.valueOf(dbObject.get("user"));
         this.renewCount = Integer.parseInt(String.valueOf(dbObject.get("renewCount")));
-
-        //this.dueDate = Integer.parseInt(dbObject.get("renewCount").toString());
-        //this.checkOutDate = Integer.parseInt(dbObject.get("renewCount").toString());
+        if(dbObject.get("dueDate")!=null)
+            this.dueDate = new Date(String.valueOf(dbObject.get("dueDate")));
+        if(dbObject.get("checkOutDate")!=null)
+            this.checkOutDate = new Date(String.valueOf(dbObject.get("checkOutDate")));
         DBObject catalogObj = (DBObject)dbObject.get("bookCatalog");
         if(catalogObj!=null){
 
