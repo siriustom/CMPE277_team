@@ -19,7 +19,7 @@ public class MongoDBUtil {
 	private DB db = null;
 	private DBCollection collection= null;
 
-	private MongoDBUtil(){};
+	private MongoDBUtil() {};
 
 	public static MongoDBUtil getInstance(){
 		return new MongoDBUtil();
@@ -31,7 +31,7 @@ public class MongoDBUtil {
 		collection = db.getCollection(collectionName);
 		return collection;
 	}
-	private  void init(){
+	private void init(){
 		try {
 			mg = new MongoClient(DB_HOST,DB_PORT);
 
@@ -42,7 +42,7 @@ public class MongoDBUtil {
 		db = mg.getDB(DB_NAME);
 
 	}
-	public  void destory(){
+	public void destory(){
 		if(mg != null)
 			mg.close();
 		db = null;
