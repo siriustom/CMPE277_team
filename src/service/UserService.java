@@ -8,7 +8,7 @@ import db.MongoDBUtil;
 import entity.BookCatalog;
 import entity.BookCopy;
 import entity.User;
-
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +18,6 @@ import java.util.List;
 public class UserService {
 
     private final static String COLLECTION_NAME = "users";
-    private final static String[] FIELDS = new String[]{"university_id","email","password","books"};
     private MongoDBUtil dbUtil = null;
 
     public List<User> queryAll(){
@@ -32,29 +31,25 @@ public class UserService {
         destory();
         return Users;
     }
-    
+
+
+    public List<String> queryByEmail(String email){
+        List<String> results = new ArrayList<String>();
+        DBCollection collection = getDBCollection();
+        BasicDBObject query=new BasicDBObject();
+        query.put("email",email);
+        DBCursor cursor = collection.find(query);
+        while(cursor.hasNext()){
+            DBObject dbObject = cursor.next();
+            results.add(String.valueOf(dbObject.get("email")));
+        }
+        destory();
+        return results;
+    }
     
     public void add(User s){
-        DBObject o = new BasicDBObject();
-        o.put(FIELDS[0],s.getUniversity_id());
-        o.put(FIELDS[1], s.getEmail());
-        o.put(FIELDS[2], s.getPassword());
 
-
-        List<DBObject> objList = new ArrayList<DBObject>();
-        if(s.getBooks() != null) {
-            for (BookCopy bc : s.getBooks()) {
-                DBObject obj = new BasicDBObject();
-                obj.put("status", bc.getStatus());
-                obj.put("user", bc.getUser());
-                obj.put("status", bc.getStatus());
-                obj.put("dueDate", bc.getDueDate());
-                obj.put("checkOutDate", bc.getCheckOutDate());
-                objList.add(obj);
-            }
-
-            o.put(FIELDS[3], objList);
-        }
+        DBObject o = s.toDBObject();
         DBCollection collection = getDBCollection();
         //insert 与 save的区别，如果_id已存在，使用insert会报错，使用save，则新的替换旧的
         //	collection.insert(o);
@@ -64,22 +59,18 @@ public class UserService {
 
     public void update(User s){
         DBObject q = new BasicDBObject();
-        q.put(FIELDS[0],s.getUniversity_id());
+        q.put("email",s.getEmail());
 
-        DBObject o = new BasicDBObject();
-        o.put(FIELDS[1], s.getEmail());
-        o.put(FIELDS[2], s.getPassword());
-        o.put(FIELDS[3], s.getBooks());
-
+        DBObject o = s.toDBObject();
         DBCollection collection = getDBCollection();
         collection.update(q, o);
         destory();
     }
 
-    public void remove(int id){
+    public void remove(String email){
         DBCollection collection = getDBCollection();
         DBObject o = new BasicDBObject();
-        o.put(FIELDS[0], id);
+        o.put("email",email);
         collection.remove(o);
         destory();
     }
@@ -92,25 +83,25 @@ public class UserService {
     }
 
     private User convert(DBObject dbObject){
-        if(! isUser(dbObject)){
+        if(dbObject==null){
             return null;
         }
         User s = new User();
-        s.setUniversity_id(dbObject.get(FIELDS[0]).toString());
-        s.setEmail(dbObject.get(FIELDS[1]).toString());
-        s.setPassword(dbObject.get(FIELDS[2]).toString());
+        s.setUniversity_id(dbObject.get("university_id").toString());
+        s.setEmail(dbObject.get("email").toString());
+        s.setPassword(dbObject.get("password").toString());
         //s.setBooks(dbObject.get(FIELDS[3]));
         return s;
     }
 
-    private boolean isUser(DBObject dbObject){
-        for(String field : FIELDS){
-            if(! dbObject.containsField(field)){
-                return false;
-            }
-        }
-        return true;
-    }
+//    private boolean isUser(DBObject dbObject){
+//        for(String field : FIELDS){
+//            if(! dbObject.containsField(field)){
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
     private void destory(){
         if(dbUtil != null)
             dbUtil.destory();
@@ -119,24 +110,25 @@ public class UserService {
     public static void main(String[] args){
         UserService us = new UserService();
         BookCatalog catalog = new BookCatalog();
-        catalog.setAuthor("shihan");
+        catalog.setTitle("Title1");
+        catalog.setAuthor("Shihan");
 
         BookCopy bc = new BookCopy();
         bc.setDueDate(new java.util.Date());
         bc.setStatus("Waiting List");
+        bc.setBookCatalog(catalog);
+
         User user = new User();
-        user.setUniversity_id("006916367");
-        user.setEmail("shihan.wang2@sjsu.edu");
+        user.setUniversity_id("006916370");
+        user.setEmail("shihan.wang8@sjsu.edu");
         user.setPassword("123456");
+        List<BookCopy> bcList = new ArrayList<BookCopy>();
+        bcList.add(bc);
+        user.setBooks(bcList);
 
-
-
-//        List<BookCopy> bcList = new ArrayList<BookCopy>();
-//        bcList.add(bc);
-//        user.setBooks(bcList);
         us.add(user);
 
 
-        System.out.println("Number of Users:"+us.queryAll().size());
+        System.out.println("Number of Users:"+us.queryByEmail("shihan.wang6@sjsu.edu").size());
     }
 }
