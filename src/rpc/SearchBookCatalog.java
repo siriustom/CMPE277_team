@@ -37,6 +37,7 @@ public class SearchBookCatalog extends HttpServlet {
 			JSONObject msg = new JSONObject();
 
 			// get request parameters for book title
+			
 			String title = request.getParameter("title");
 			
 			//communicate to db

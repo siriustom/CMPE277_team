@@ -38,8 +38,9 @@ public class SignIn extends HttpServlet {
 		try {
 			JSONObject msg = new JSONObject();
 			// get request parameters for email and password
-			String email = request.getParameter("email");
-			String password = request.getParameter("password");
+			JSONObject input = RpcHelper.readJsonObject(request);
+			String email = (String) input.get("email");
+			String password = (String) input.get("password");
 			
 			//communicate to db
 			

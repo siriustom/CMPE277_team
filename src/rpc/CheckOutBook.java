@@ -33,8 +33,9 @@ public class CheckOutBook extends HttpServlet {
 		try {
 			JSONObject msg = new JSONObject();
 			// get request parameters for book title and update fields
-			String title = request.getParameter("title");
-			String number = request.getParameter("number");
+			JSONObject input = RpcHelper.readJsonObject(request);
+			String title = (String) input.get("title");
+			String number = (String) input.get("number");
 			
 			//communicate to db
 			
