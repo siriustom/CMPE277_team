@@ -114,18 +114,20 @@ public class RequestSignUp extends HttpServlet {
 	private void sendEmail(String code, String to) {
 		// send email
 		String from = "zeningdeng2@gmail.com";
-		String host = "server";
+		String host = "aspmx.l.google.com";
 		Properties properties = System.getProperties();
 		properties.setProperty("mail.smtp.host", host);
-		properties.setProperty("mail.user", "zeningdeng2@gmail.com");
-		properties.setProperty("mail.password", "zdpassword");
+		properties.setProperty("mail.smtp.port", 25);
+		
+		//properties.setProperty("mail.user", "zeningdeng2@gmail.com");
+		//properties.setProperty("mail.password", "zdpassword");
 		Session session = Session.getDefaultInstance(properties);
 		try {
 			MimeMessage e = new MimeMessage(session);
 			e.setFrom(new InternetAddress(from));
 			e.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			e.setSubject("This is validation code!");
-			e.setText("Your code is " + code);
+			e.setContent("Your code is " + code);
 			Transport.send(e);
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
