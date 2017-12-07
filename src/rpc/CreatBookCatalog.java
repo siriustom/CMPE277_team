@@ -53,17 +53,17 @@ public class CreatBookCatalog extends HttpServlet {
 			String keywords = (String) input.get("keywords");
 			String coverImage = (String) input.get("coverImage");
 			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
-			String copies = (String) input.get("copies");
+			String[] copies = (String[]) input.get("copies");
 			String message = "";
 			
-			if (db.isBookExisted(title)) {
+			if (!db.isBookExisted(title)) {
 				//communicate to db
 				BookCatalogBuilder builder = new BookCatalogBuilder();
 				BookCatalog bc = builder.setAuthor(author).setTitle(title).setCallNumber(Integer.parseInt(callNumber)).
 				setPublisher(publisher).setYearOfPublication(Integer.parseInt(yearOfPub)).setLocationInLibrary(location).
 				setKeywords(keywords).setCoverImage(coverImage).setLibrarianCreatedUpdated(librarianCreatedUpdated).build();
 				List<BookCopy> copylist = new ArrayList<>();
-				for (int i = 0; i < Integer.parseInt(copies); i++) {
+				for (int i = 0; i < copies.length; i++) {
 					BookCopy book = new BookCopy(bc);
 					//call book copy service API
 					db2.add(book);
