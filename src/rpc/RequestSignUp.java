@@ -117,7 +117,7 @@ public class RequestSignUp extends HttpServlet {
 		String host = "aspmx.l.google.com";
 		Properties properties = System.getProperties();
 		properties.setProperty("mail.smtp.host", host);
-		properties.setProperty("mail.smtp.port", 25);
+		properties.setProperty("mail.smtp.port", "25");
 		
 		//properties.setProperty("mail.user", "zeningdeng2@gmail.com");
 		//properties.setProperty("mail.password", "zdpassword");
@@ -127,7 +127,7 @@ public class RequestSignUp extends HttpServlet {
 			e.setFrom(new InternetAddress(from));
 			e.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			e.setSubject("This is validation code!");
-			e.setContent("Your code is " + code);
+			e.setText("Your code is " + code);
 			Transport.send(e);
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
