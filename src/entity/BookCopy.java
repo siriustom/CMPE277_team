@@ -119,6 +119,7 @@ public class BookCopy{
 
     public BookCopy(DBObject dbObject) {
         //super();
+        this.copyId = String.valueOf(dbObject.get("_id"));
         this.status = String.valueOf(dbObject.get("copyId"));
         this.status = String.valueOf(dbObject.get("status"));
         this.user = String.valueOf(dbObject.get("user"));

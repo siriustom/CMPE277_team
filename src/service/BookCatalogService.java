@@ -108,7 +108,7 @@ public class BookCatalogService {
     public static void main(String[] args){
         BookCatalogService bcs = new BookCatalogService();
         BookCatalog catalog = new BookCatalog();
-        catalog.setTitle("Title6");
+        catalog.setTitle("Title14");
         catalog.setAuthor("Shihan");
 
         BookCopy bc = new BookCopy(catalog);
@@ -119,6 +119,8 @@ public class BookCatalogService {
         //us.add(user);
         bcs.add(catalog);
 
-        System.out.println("Number of Catalogs: "+bcs.queryAll().size());
+        BookCatalog catalog1 = bcs.queryById("Title14");
+        System.out.println();
+        System.out.println(bcs.isBookExisted("nightmare"));
     }
 }

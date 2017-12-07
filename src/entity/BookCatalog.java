@@ -262,7 +262,7 @@ public class BookCatalog {
 			}
 		}
 
-		List<DBObject> bookObjList = (List<DBObject>)dbObject.get("books");
+		List<DBObject> bookObjList = (List<DBObject>)dbObject.get("copies");
 		if(bookObjList!=null){
 
 			for(DBObject obj:bookObjList){
