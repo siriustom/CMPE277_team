@@ -52,7 +52,7 @@ public class RequestSignUp extends HttpServlet {
 			// get request parameters for universityID and password
 			String universityId = request.getParameter("university_id");
 			String email = request.getParameter("email");
-			int atSign = email.indexOf("@");
+			int atSign = email.indexOf('@');
 			
 			// communicate to db
 			List<String> listOfEmail = db.queryByEmail(email);
