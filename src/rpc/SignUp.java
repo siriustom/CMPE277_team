@@ -42,7 +42,10 @@ public class SignUp extends HttpServlet {
 			String universityId = request.getParameter("university_id");
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
-			String verifyCode = request.getParameter("verification_code");
+			
+			//communicate to database
+			
+			//write response
 			String message = "user has been signed up";
 			msg.put("status", "OK");
 			msg.put("msg", message);
