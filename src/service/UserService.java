@@ -43,6 +43,17 @@ public class UserService {
         return result;
     }
 
+    public boolean verifySignIn(String email,String password){
+        boolean result = false;
+        DBCollection collection = getDBCollection();
+        BasicDBObject query=new BasicDBObject();
+        query.put("email",email);
+        query.put("password",password);
+        DBObject userObj = collection.findOne(query);
+        if(userObj!=null)   result = true;
+        destory();
+        return result;
+    }
 
     public List<String> queryByEmail(String email){
         List<String> results = new ArrayList<String>();
@@ -139,7 +150,7 @@ public class UserService {
 
         //us.add(user);
         User uss = us.queryById("shihan.wang6@sjsu.edu");
-
+        System.out.println(us.verifySignIn("shihan.wang6@sjsu.edu","123456"));
         System.out.println(uss.getBooks().get(0).getBookCatalog().getTitle());
     }
 }
