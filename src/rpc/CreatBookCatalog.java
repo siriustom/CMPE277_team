@@ -61,7 +61,10 @@ public class CreatBookCatalog extends HttpServlet {
 				setKeywords(keywords).setCoverImage(coverImage).setLibrarianCreatedUpdated(librarianCreatedUpdated).build();
 				List<BookCopy> copylist = new ArrayList<>();
 				for (int i = 0; i < Integer.parseInt(copies); i++) {
-					copylist.add(new BookCopy(bc));
+					BookCopy book = new BookCopy(bc);
+					//call book copy service API
+					
+					copylist.add(book);
 				}
 				db.add(bc);
 				message += "book catalog has been created.";

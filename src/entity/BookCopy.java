@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -12,14 +13,13 @@ public class BookCopy{
 
     private String copyId;
     private String status;
-    private String user;
+    private String user;//email
     private BookCatalog bookCatalog;
     private Date dueDate;
     private Date checkOutDate;
     private int renewCount;
 
     public BookCopy() {
-    	
     }
     
     public BookCopy(BookCatalog bookCatalog) {

@@ -51,7 +51,9 @@ public class EditBookCatalog extends HttpServlet {
 			String coverImage = (String) input.get("coverImage");
 			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
 			String copies = (String) input.get("copies");
+
 			String message = "update complete: ";
+			
 			
 			//communicate to db
 			BookCatalog bc = db.queryById(title);
