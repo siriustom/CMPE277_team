@@ -43,7 +43,17 @@ public class BookCatalogService {
         return result;
     }
 
-    
+    public boolean isBookExisted(String title){
+        boolean result = false;
+        DBCollection collection = getDBCollection();
+        BasicDBObject query=new BasicDBObject();
+        query.put("title",title);
+        DBObject catalogObj = collection.findOne(query);
+        if(catalogObj!=null)   result = true;
+        destory();
+        return result;
+    }
+
     public void add(BookCatalog s){
 
         DBObject o = s.toDBObject();
@@ -78,6 +88,7 @@ public class BookCatalogService {
         }
         return dbUtil.getDBConllection(COLLECTION_NAME);
     }
+
 
 
 
