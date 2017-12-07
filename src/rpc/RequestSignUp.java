@@ -57,9 +57,9 @@ public class RequestSignUp extends HttpServlet {
 			List<String> listOfEmail = db.queryByEmail(email);
 			int atSignStore = listOfEmail.get(0).indexOf("@");
 			if (listOfEmail.size() >= 2) {
-				String deny = "you cannot have more than two accounts.";
+				String moreThanTwo = "you cannot have more than two accounts.";
 				msg.put("status", "error");
-				msg.put("msg", deny);
+				msg.put("msg", moreThanTwo);
 				RpcHelper.writeJsonObject(response, msg);
 			} else if (listOfEmail.size() == 1 && 
 					(email.substring(atSign + 1) == "sjsu" && listOfEmail.get(0).substring(atSignStore + 1) == "sjsu" ||
