@@ -32,28 +32,31 @@ import service.UserService;
 @WebServlet("/RequestSignUp")
 public class RequestSignUp extends HttpServlet {
 	private final UserService db;
-	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RequestSignUp() {
-        super();
-        	db = new UserService();
-    }
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public RequestSignUp() {
+		super();
+		db = new UserService();
+	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			JSONObject msg = new JSONObject();
-			
+
 			// get request parameters for universityID and password
-			String universityId = request.getParameter("university_id");
-			String email = request.getParameter("email");
-			int atSign = email.indexOf("@");
-			
+			JSONObject input = RpcHelper.readJsonObject(request);
+			String universityId = (String) input.get("university_id");
+			String email = (String) input.get("email");
+			int atSign = email.indexOf('@');
+
+			// communicate to db
 			List<String> listOfEmail = db.queryByEmail(email);
 			int atSignStore = listOfEmail.get(0).indexOf("@");
 			if (listOfEmail.size() >= 2) {
@@ -61,25 +64,26 @@ public class RequestSignUp extends HttpServlet {
 				msg.put("status", "error");
 				msg.put("msg", moreThanTwo);
 				RpcHelper.writeJsonObject(response, msg);
-			} else if (listOfEmail.size() == 1 && 
-					(email.substring(atSign + 1) == "sjsu" && listOfEmail.get(0).substring(atSignStore + 1) == "sjsu" ||
-					email.substring(atSign + 1) != "sjsu" && listOfEmail.get(0).substring(atSignStore + 1) != "sjsu")) {
+			} else if (listOfEmail.size() == 1
+					&& (email.substring(atSign + 1) == "sjsu" && listOfEmail.get(0).substring(atSignStore + 1) == "sjsu"
+							|| email.substring(atSign + 1) != "sjsu"
+									&& listOfEmail.get(0).substring(atSignStore + 1) != "sjsu")) {
 				String moreThanOne = "you cannot have more than one account in certain email domain.";
 				msg.put("status", "error");
 				msg.put("msg", moreThanOne);
 				RpcHelper.writeJsonObject(response, msg);
 			} else {
-				//generate a random number for verification code
+				// generate a random number for verification code
 				int code = codeGenerate();
-				
-				//no need to verify duplicate email, just send back verification code
+
+				// no need to verify duplicate email, just send back verification code
 				String verifyCode = "verification code sent";
 				msg.put("status", "OK");
 				msg.put("verification_code", code);
 				msg.put("msg", verifyCode);
 				RpcHelper.writeJsonObject(response, msg);
-				
-				//send email 
+
+				// send email
 				String vcode = String.valueOf(code);
 				String from = "zeningdeng@gmail.com";
 				String host = "server";
@@ -88,22 +92,22 @@ public class RequestSignUp extends HttpServlet {
 				properties.setProperty("mail.user", "zeningdeng2@gmail.com");
 				properties.setProperty("mail.password", "zdpassword");
 				Session session = Session.getDefaultInstance(properties);
-			    try {
-				    MimeMessage e = new MimeMessage(session);
-				    e.setFrom(new InternetAddress(from));
-				    e.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); 
-			        e.setSubject("This is validation code!");
-			        e.setText("Your code is "+ vcode);
-			        Transport.send(e);
-			    } catch (MessagingException mex) {
-			    		mex.printStackTrace();
-			    }
+				try {
+					MimeMessage e = new MimeMessage(session);
+					e.setFrom(new InternetAddress(from));
+					e.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+					e.setSubject("This is validation code!");
+					e.setText("Your code is " + vcode);
+					Transport.send(e);
+				} catch (MessagingException mex) {
+					mex.printStackTrace();
+				}
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private int codeGenerate() {
 		return (int) (Math.random() * 1000000 + 1);
 	}
