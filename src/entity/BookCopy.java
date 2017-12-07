@@ -17,8 +17,17 @@ public class BookCopy{
     private Date checkOutDate;
     private int renewCount;
 
-    public BookCopy(){}
-
+    public BookCopy() {
+    	
+    }
+    
+    public BookCopy(BookCatalog bookCatalog) {
+    		this.status = "available";
+    		this.user = "";
+    		this.bookCatalog = bookCatalog;
+    		this.renewCount = 3;
+    }
+    
     public String getStatus() {
         return status;
     }
