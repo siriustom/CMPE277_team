@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.Date;
+import java.util.List;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -15,6 +16,8 @@ public class BookCopy{
     private Date dueDate;
     private Date checkOutDate;
     private int renewCount;
+
+    public BookCopy(){}
 
     public String getStatus() {
         return status;
@@ -92,5 +95,20 @@ public class BookCopy{
             e.printStackTrace();
         }
         return obj;
+    }
+
+    public BookCopy(DBObject dbObject) {
+        //super();
+        this.status = String.valueOf(dbObject.get("status"));
+        this.user = String.valueOf(dbObject.get("user"));
+        this.renewCount = Integer.parseInt(String.valueOf(dbObject.get("renewCount")));
+
+        //this.dueDate = Integer.parseInt(dbObject.get("renewCount").toString());
+        //this.checkOutDate = Integer.parseInt(dbObject.get("renewCount").toString());
+        DBObject catalogObj = (DBObject)dbObject.get("bookCatalog");
+        if(catalogObj!=null){
+
+            this.setBookCatalog(new BookCatalog(catalogObj));
+        }
     }
 }
