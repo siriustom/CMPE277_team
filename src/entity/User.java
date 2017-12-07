@@ -1,7 +1,10 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,4 +59,26 @@ public class User {
 		}
 		return obj;
 	}
+
+    public DBObject toDBObject() {
+        DBObject obj = new BasicDBObject();
+        try {
+            obj.put("university_id", university_id);
+            obj.put("email", email);
+            obj.put("password", password);
+            if(books!=null){
+                List<DBObject> objList = new ArrayList<DBObject>();
+                for(BookCopy bc:books){
+                    objList.add(bc.toDBObject());
+                }
+                obj.put("books",objList);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+
 }

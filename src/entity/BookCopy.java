@@ -2,10 +2,12 @@ package entity;
 
 import java.util.Date;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class BookCopy {
+public class BookCopy{
 
     private String status;
     private String user;
@@ -53,7 +55,15 @@ public class BookCopy {
     public void setRenewCount(int renewCount) {
         this.renewCount = renewCount;
     }
-    
+
+    public BookCatalog getBookCatalog() {
+        return bookCatalog;
+    }
+
+    public void setBookCatalog(BookCatalog bookCatalog) {
+        this.bookCatalog = bookCatalog;
+    }
+
     public JSONObject toJSONObject() {
 		JSONObject obj = new JSONObject();
 		try {
@@ -68,4 +78,19 @@ public class BookCopy {
 		}
 		return obj;
 	}
+
+    public DBObject toDBObject() {
+        DBObject obj = new BasicDBObject();
+        try {
+            obj.put("status", status);
+            obj.put("user", user);
+            obj.put("bookCatalog", bookCatalog.toDBObject());
+            obj.put("dueDate", dueDate);
+            obj.put("checkOutDate", checkOutDate);
+            obj.put("renewCount", renewCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
 }
