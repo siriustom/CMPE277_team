@@ -51,23 +51,27 @@ public class CreatBookCatalog extends HttpServlet {
 			String coverImage = (String) input.get("coverImage");
 			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
 			String copies = (String) input.get("copies");
-			String message = "this book catalog has been created";
+			String message = "";
 			
-			//communicate to db
-			BookCatalogBuilder builder = new BookCatalogBuilder();
-			BookCatalog bc = builder.setAuthor(author).setTitle(title).setCallNumber(Integer.parseInt(callNumber)).
-			setPublisher(publisher).setYearOfPublication(Integer.parseInt(yearOfPub)).setLocationInLibrary(location).
-			setKeywords(keywords).setCoverImage(coverImage).setLibrarianCreatedUpdated(librarianCreatedUpdated).build();
-			List<BookCopy> copylist = new ArrayList<>();
-			for (int i = 0; i < Integer.parseInt(copies); i++) {
-				copylist.add(new BookCopy(bc));
+			if (db.isBookExisted(title)) {
+				//communicate to db
+				BookCatalogBuilder builder = new BookCatalogBuilder();
+				BookCatalog bc = builder.setAuthor(author).setTitle(title).setCallNumber(Integer.parseInt(callNumber)).
+				setPublisher(publisher).setYearOfPublication(Integer.parseInt(yearOfPub)).setLocationInLibrary(location).
+				setKeywords(keywords).setCoverImage(coverImage).setLibrarianCreatedUpdated(librarianCreatedUpdated).build();
+				List<BookCopy> copylist = new ArrayList<>();
+				for (int i = 0; i < Integer.parseInt(copies); i++) {
+					copylist.add(new BookCopy(bc));
+				}
+				db.add(bc);
+				message += "book catalog has been created.";
+				msg.put("status", "OK");
+			} else {
+				message += "book catalog has been already existed.";
+				msg.put("status", "error");
 			}
-			db.add(bc);
-			
-			
-			
+
 			//response
-			msg.put("status", "OK");
 			msg.put("msg", message);
 			RpcHelper.writeJsonObject(response, msg);
 		} catch (JSONException e) {

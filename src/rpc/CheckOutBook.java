@@ -1,6 +1,10 @@
 package rpc;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import entity.BookCatalog;
+import entity.BookCopy;
+import entity.User;
+import service.BookCatalogService;
 import service.UserService;
 
 /**
@@ -18,12 +26,14 @@ import service.UserService;
 @WebServlet("/CheckOutBook")
 public class CheckOutBook extends HttpServlet {
 	private final UserService db;
+	private final BookCatalogService db2;
     /**
      * @see HttpServlet#HttpServlet()
      */
     public CheckOutBook() {
         super();
         db = new UserService();
+        db2 = new BookCatalogService();
     }
 
 	/**
@@ -36,8 +46,28 @@ public class CheckOutBook extends HttpServlet {
 			JSONObject input = RpcHelper.readJsonObject(request);
 			String title = (String) input.get("title");
 			String number = (String) input.get("number");
+			String email = (String) input.get("email");
 			
 			//communicate to db
+			User user = db.queryById(email);
+			BookCatalog bc = db2.queryById(title);
+			List<BookCopy> avList = new ArrayList<>();
+			for (BookCopy b : bc.getCopies()) {
+				if (b.getStatus() == "available") {
+					avList.add(b);
+				} 
+			}
+			int num = Integer.parseInt(number);
+			if (avList.size() >= num && num <= 3) {
+				if (user.getBooks().size() + num <= 9) {
+					for (int i = 0; i < num; i++) {
+						BookCopy checkout = avList.remove(0);
+						checkout.setUser(user.getEmail());
+						checkout.setCheckOutDate(new Date());
+						user.getBooks().add(checkout);
+					}
+				}
+			}
 			
 			//reponse
 			String message = "";
