@@ -95,7 +95,6 @@ public class RequestSignUp extends HttpServlet {
 			    		mex.printStackTrace();
 			    }
 			}
-		
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
