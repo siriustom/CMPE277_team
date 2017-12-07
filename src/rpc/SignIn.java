@@ -43,11 +43,16 @@ public class SignIn extends HttpServlet {
 			String password = (String) input.get("password");
 			
 			//communicate to db
-			
-			
-			String message = "signed in successfully";
-			msg.put("status", "OK");
-			msg.put("msg", message);
+			String message = "";
+			if (db.verifySignIn(email, password)) {
+				message = "signed in successfully";
+				msg.put("status", "OK");
+				msg.put("msg", message);
+			} else {
+				message = "either email or password is wrong.";
+				msg.put("status", "error");
+				msg.put("msg", message);
+			}
 			RpcHelper.writeJsonObject(response, msg);
 		} catch (JSONException e) {
 			e.printStackTrace();

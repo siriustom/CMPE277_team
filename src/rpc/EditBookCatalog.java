@@ -33,7 +33,8 @@ public class EditBookCatalog extends HttpServlet {
 		try {
 			JSONObject msg = new JSONObject();
 			// get request parameters for book title and update fields
-			String title = request.getParameter("title");
+			JSONObject input = RpcHelper.readJsonObject(request);
+			String title = (String) input.get("title");
 			String message = "";
 			msg.put("status", "OK");
 			msg.put("msg", message);
