@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import service.UserService;
 
 /**
- * Servlet handles book catalog editing
+ * Servlet handles book catalog creation and editing 
  */
 @WebServlet("/EditBookCataLog")
 public class EditBookCatalog extends HttpServlet {
