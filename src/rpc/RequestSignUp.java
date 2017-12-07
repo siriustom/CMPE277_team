@@ -62,11 +62,26 @@ public class RequestSignUp extends HttpServlet {
 			RpcHelper.writeJsonObject(response, msg);
 			
 			//send email 
-			String from = "linxiaoran0210@gmail.com";
-			String host = "Server";
+			
+			String to;
+			String vcode=String.valueOf(code);
+			String from="zeningdeng@gmail.com";
+			String host="localhost";
 			Properties properties = System.getProperties();
 			properties.setProperty("mail.smtp.host", host);
+			properties.setProperty("mail.user", "zeningdeng2@gmail.com");
+			properties.setProperty("mail.password", "zdpassword");
 			Session session = Session.getDefaultInstance(properties);
+			response.setContentType("text/html;charset=UTF-8");
+		    PrintWriter out = response.getWriter();
+		    
+		    MimeMessage message = new MimeMessage(session);
+		    message.setFrom(new InternetAddress(from));
+		    message.addRecipient(Message.RecipientType.TO, new InternetAddress(to)); 
+	        message.setSubject("This is validation code!");
+	        message.setText("Your code is "+vcode);
+	        Transport.send(message);
+
 			
 			
 		} catch (JSONException e) {
