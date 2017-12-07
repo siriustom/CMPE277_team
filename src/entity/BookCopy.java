@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,6 @@ public class BookCopy{
     private int renewCount;
 
     public BookCopy() {
-    	
     }
     
     public BookCopy(BookCatalog bookCatalog) {

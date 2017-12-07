@@ -2,6 +2,7 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -96,6 +97,12 @@ public class User {
                 books.add(copy);
             }
         }
+    }
+    
+    public int diffDays(BookCopy book) {
+    		long today = (new Date()).getTime();
+    		long checkout = book.getCheckOutDate().getTime();
+    		return (int) (checkout - today) / (24 * 60 * 60 * 1000);	
     }
 
 }

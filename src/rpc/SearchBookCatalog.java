@@ -43,14 +43,20 @@ public class SearchBookCatalog extends HttpServlet {
 			// get request parameters for book title
 			
 			String title = request.getParameter("title");
-			
+			String message = "";
 			//communicate to db
-			List<BookCatalog> booklist = db.queryAll();
+			if (db.isBookExisted(title)) {
+				BookCatalog bookList = db.queryById(title);
+				JSONObject bookListJSON = bookList.toJSONObject();
+				message += "the bookcatalog has been returned";
+				msg.put("status", "OK");
+				msg.put("bookcatalog", bookListJSON);
+			} else {
+				message += "no such bookcatalog for given title.";
+				msg.put("status", "error");
+			}
 			
 			//response
-			String message = "all bookcatalogs has been returned";
-			msg.put("status", "OK");
-			msg.put("bookcatalog", booklist);
 			msg.put("msg", message);
 			RpcHelper.writeJsonObject(response, msg);
 		} catch (JSONException e) {

@@ -17,6 +17,7 @@ import entity.BookCatalog;
 import entity.BookCopy;
 import entity.BookCatalog.BookCatalogBuilder;
 import service.BookCatalogService;
+import service.BookCopyService;
 
 /**
  * Servlet handles book catalog creation
@@ -24,6 +25,7 @@ import service.BookCatalogService;
 @WebServlet("/CreatBookCatalog")
 public class CreatBookCatalog extends HttpServlet {
 	private final BookCatalogService db;
+	private final BookCopyService db2;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -31,6 +33,7 @@ public class CreatBookCatalog extends HttpServlet {
     public CreatBookCatalog() {
         super();
         db = new BookCatalogService();
+        db2 = new BookCopyService();
     }
 
 	/**
@@ -61,7 +64,10 @@ public class CreatBookCatalog extends HttpServlet {
 				setKeywords(keywords).setCoverImage(coverImage).setLibrarianCreatedUpdated(librarianCreatedUpdated).build();
 				List<BookCopy> copylist = new ArrayList<>();
 				for (int i = 0; i < Integer.parseInt(copies); i++) {
-					copylist.add(new BookCopy(bc));
+					BookCopy book = new BookCopy(bc);
+					//call book copy service API
+					db2.add(book);
+					copylist.add(book);
 				}
 				db.add(bc);
 				message += "book catalog has been created.";
