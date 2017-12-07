@@ -19,9 +19,9 @@ public class BookCatalog {
 	private String locationInLibrary;
 	private String keywords;
 	private String coverImage;
-	private List<String> waitlist;
+	private List<String> waitlist = new ArrayList<String>();
 	private String librarianCreatedUpdated;
-	private BookCopy[] copies;
+	private List<BookCopy> copies = new ArrayList<BookCopy>();
 	
 	//Getters
 	public String getAuthor() {
@@ -54,9 +54,11 @@ public class BookCatalog {
 	public String getLibrarianCreatedUpdated() {
 		return librarianCreatedUpdated;
 	}
-	public BookCopy[] getCopies() {
+	public List<BookCopy> getCopies() {
 		return copies;
 	}
+
+	public BookCatalog(){}
 
 	public void setAuthor(String author) {
 		this.author = author;
@@ -98,7 +100,7 @@ public class BookCatalog {
 		this.librarianCreatedUpdated = librarianCreatedUpdated;
 	}
 
-	public void setCopies(BookCopy[] copies) {
+	public void setCopies(List<BookCopy> copies) {
 		this.copies = copies;
 	}
 
@@ -149,5 +151,35 @@ public class BookCatalog {
 			e.printStackTrace();
 		}
 		return obj;
+	}
+
+	public BookCatalog(DBObject dbObject) {
+		//super();
+		this.author = String.valueOf(dbObject.get("author"));
+		this.title = String.valueOf(dbObject.get("title"));
+		this.callNumber = Integer.parseInt(String.valueOf(dbObject.get("callNumber")));
+		this.publisher = String.valueOf(dbObject.get("publisher"));
+		this.yearOfPublication = Integer.parseInt(String.valueOf(dbObject.get("yearOfPublication")));
+		this.locationInLibrary = String.valueOf(dbObject.get("locationInLibrary"));
+		this.keywords = String.valueOf(dbObject.get("keywords"));
+		this.coverImage = String.valueOf(dbObject.get("coverImage"));
+		this.librarianCreatedUpdated = String.valueOf(dbObject.get("librarianCreatedUpdated"));
+
+		List<String> waitList = (List<String>)dbObject.get("waitlist");
+		if(waitList!=null){
+
+			for(String str:waitList){
+				waitlist.add(str);
+			}
+		}
+
+		List<DBObject> bookObjList = (List<DBObject>)dbObject.get("books");
+		if(bookObjList!=null){
+
+			for(DBObject obj:bookObjList){
+				BookCopy copy = new BookCopy(obj);
+				copies.add(copy);
+			}
+		}
 	}
 }

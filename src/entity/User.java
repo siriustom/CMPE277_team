@@ -10,10 +10,11 @@ import org.json.JSONObject;
 
 public class User {
 
+
     private String university_id;
     private String email;
     private String password;
-    private List<BookCopy> books;
+    private List<BookCopy> books = new ArrayList<BookCopy>();
 
     public String getUniversity_id() {
         return university_id;
@@ -46,7 +47,9 @@ public class User {
     public void setBooks(List<BookCopy> books) {
         this.books = books;
     }
-    
+
+    public User(){}
+
     public JSONObject toJSONObject() {
 		JSONObject obj = new JSONObject();
 		try {
@@ -80,5 +83,19 @@ public class User {
         return obj;
     }
 
+    public User(DBObject dbObject) {
+        //super();
+        this.university_id = String.valueOf(dbObject.get("university_id"));
+        this.email = String.valueOf(dbObject.get("email"));
+        this.password = String.valueOf(dbObject.get("password"));
+        List<DBObject> bookObjList = (List<DBObject>)dbObject.get("books");
+        if(bookObjList!=null){
+
+            for(DBObject obj:bookObjList){
+                BookCopy copy = new BookCopy(obj);
+                books.add(copy);
+            }
+        }
+    }
 
 }
