@@ -20,7 +20,7 @@ import service.BookCatalogService;
 import service.UserService;
 
 /**
- * Servlet handles book catalog creation and editing 
+ * Servlet handles book catalog editing 
  */
 @WebServlet("/EditBookCataLog")
 public class EditBookCatalog extends HttpServlet {
@@ -51,20 +51,53 @@ public class EditBookCatalog extends HttpServlet {
 			String coverImage = (String) input.get("coverImage");
 			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
 			String copies = (String) input.get("copies");
-			String message = "this book catalog has been updated";
+			String message = "update complete: ";
 			
 			//communicate to db
-			BookCatalogBuilder builder = new BookCatalogBuilder();
-			BookCatalog bc = builder.setAuthor(author).setTitle(title).setCallNumber(Integer.parseInt(callNumber)).
-			setPublisher(publisher).setYearOfPublication(Integer.parseInt(yearOfPub)).setLocationInLibrary(location).
-			setKeywords(keywords).setCoverImage(coverImage).setLibrarianCreatedUpdated(librarianCreatedUpdated).build();
-			List<BookCopy> copylist = new ArrayList<>();
-			for (int i = 0; i < Integer.parseInt(copies); i++) {
-				copylist.add(new BookCopy(bc));
+			BookCatalog bc = db.queryById(title);
+			bc.setAuthor(author);
+			bc.setTitle(title);
+			bc.setCallNumber(Integer.parseInt(callNumber));
+			bc.setPublisher(publisher);
+			bc.setYearOfPublication(Integer.parseInt(yearOfPub));
+			bc.setLocationInLibrary(location);
+			bc.setKeywords(keywords);
+			bc.setCoverImage(coverImage);
+			bc.setLibrarianCreatedUpdated(librarianCreatedUpdated);
+			
+			//find how many copies are available
+			int copyAv = 0;
+			for (BookCopy b : bc.getCopies()) {
+				if (b.getStatus().equals("available")) {
+					copyAv++;
+				}
 			}
-			db.add(bc);
-			
-			
+			//copyUpd is updated figure
+			int copyUpd = Integer.parseInt(copies);
+			int copyTotal = bc.getCopies().size();
+			if (copyUpd > copyTotal) {
+				for (int i = 0; i < copyUpd - copyTotal; i++) {
+					bc.getCopies().add(new BookCopy(bc));
+				}
+			} else if (copyUpd < copyTotal) {
+				if ((copyTotal - copyUpd <= copyAv)) {//update only if reduced number is less than available number
+					List<BookCopy> avai = new ArrayList<>();
+					List<BookCopy> unavai = new ArrayList<>();
+					for (BookCopy b : bc.getCopies()) {
+						if (b.getStatus().equals("available")) {
+							avai.add(b);
+						} else {
+							unavai.add(b);
+						}
+					}
+					int addavai = copyAv - (copyTotal - copyUpd);
+					List<BookCopy> sublist = avai.subList(0, addavai);
+					unavai.addAll(sublist);
+					bc.setCopies(unavai);
+				} else {
+					message += "copies update denial due to avail number is less than reduced number";
+				}
+			}
 			
 			//response
 			msg.put("status", "OK");
