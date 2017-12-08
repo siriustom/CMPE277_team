@@ -18,6 +18,7 @@ import entity.BookCatalog;
 import entity.BookCopy;
 import entity.User;
 import service.BookCatalogService;
+import service.BookCopyService;
 import service.UserService;
 
 /**
@@ -27,6 +28,7 @@ import service.UserService;
 public class CheckOutBook extends HttpServlet {
 	private final UserService db;
 	private final BookCatalogService db2;
+	private final BookCopyService db3;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -34,6 +36,7 @@ public class CheckOutBook extends HttpServlet {
         super();
         db = new UserService();
         db2 = new BookCatalogService();
+        db3 = new BookCopyService();
     }
 
 	/**
@@ -47,15 +50,19 @@ public class CheckOutBook extends HttpServlet {
 			String title = (String) input.get("title");
 			String number = (String) input.get("number");
 			String email = (String) input.get("email");
+			String message = "";
 			
 			//communicate to db
 			User user = db.queryById(email);
 			BookCatalog bc = db2.queryById(title);
 			List<BookCopy> avList = new ArrayList<>();
+			List<BookCopy> unavList = new ArrayList<>();
 			for (BookCopy b : bc.getCopies()) {
 				if (b.getStatus() == "available") {
 					avList.add(b);
-				} 
+				} else {
+					unavList.add(b);
+				}
 			}
 			int num = Integer.parseInt(number);
 			if (avList.size() >= num && num <= 3) {
@@ -67,15 +74,23 @@ public class CheckOutBook extends HttpServlet {
 						Date due = new Date(c.getTime() + (30 * 24 * 60 * 60 * 1000));
 						checkout.setCheckOutDate(c);
 						checkout.setDueDate(due);
+						checkout.setStatus("borrowed");
+						db3.update(checkout);
 						user.getBooks().add(checkout);
 					}
+					unavList.addAll(avList);
+					bc.setCopies(unavList);
+					db.update(user);
+					db2.update(bc);
+					msg.put("status", "OK");
+					msg.put("msg", message);
 				}
+			} else {
+				msg.put("status", "error");
+				msg.put("msg", message);
 			}
 			
-			//reponse
-			String message = "";
-			msg.put("status", "OK");
-			msg.put("msg", message);
+			//response
 			RpcHelper.writeJsonObject(response, msg);
 		} catch (JSONException e) {
 			e.printStackTrace();
