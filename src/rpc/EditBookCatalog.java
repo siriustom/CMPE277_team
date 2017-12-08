@@ -17,6 +17,7 @@ import entity.BookCatalog;
 import entity.BookCatalog.BookCatalogBuilder;
 import entity.BookCopy;
 import service.BookCatalogService;
+import service.BookCopyService;
 import service.UserService;
 
 /**
@@ -24,13 +25,17 @@ import service.UserService;
  */
 @WebServlet("/EditBookCataLog")
 public class EditBookCatalog extends HttpServlet {
-    private final BookCatalogService db;
+	private final UserService db;
+	private final BookCatalogService db2;
+	private final BookCopyService db3;
     /**
      * @see HttpServlet#HttpServlet()
      */
     public EditBookCatalog() {
         super();
-        	db = new BookCatalogService();
+        	db = new UserService();
+        	db2 = new BookCatalogService();
+        	db3 = new BookCopyService();
     }
 
 	/**
@@ -50,12 +55,13 @@ public class EditBookCatalog extends HttpServlet {
 			String keywords = (String) input.get("keywords");
 			String coverImage = (String) input.get("coverImage");
 			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
+			String email = (String) input.get("email");
 
-			String message = "update complete: ";
+			String message = "";
 			
 			
 			//communicate to db
-			BookCatalog bc = db.queryById(title);
+			BookCatalog bc = db2.queryById(title);
 			bc.setAuthor(author);
 			bc.setTitle(title);
 			bc.setCallNumber(Integer.parseInt(callNumber));
@@ -65,7 +71,8 @@ public class EditBookCatalog extends HttpServlet {
 			bc.setKeywords(keywords);
 			bc.setCoverImage(coverImage);
 			bc.setLibrarianCreatedUpdated(librarianCreatedUpdated);
-			db.update(bc);
+			
+			db2.update(bc);
 			
 			//response
 			msg.put("status", "OK");

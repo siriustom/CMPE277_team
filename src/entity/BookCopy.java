@@ -1,5 +1,6 @@
 package entity;
 
+
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class BookCopy{
     private int renewCount;
 
     public BookCopy() {
+    		this.status = "available";
+		this.user = "";
+		this.renewCount = 3;
     }
     
     public BookCopy(BookCatalog bookCatalog) {

@@ -53,7 +53,7 @@ public class CreatBookCatalog extends HttpServlet {
 			String keywords = (String) input.get("keywords");
 			String coverImage = (String) input.get("coverImage");
 			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
-			String[] copies = (String[]) input.get("copies");
+			JSONObject[] copies = (JSONObject[]) input.get("copies");
 			String message = "";
 			
 			if (!db.isBookExisted(title)) {
