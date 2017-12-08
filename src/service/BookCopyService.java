@@ -7,7 +7,6 @@ import com.mongodb.DBObject;
 import db.MongoDBUtil;
 import entity.BookCatalog;
 import entity.BookCopy;
-import entity.BookCopy;
 import entity.User;
 
 import java.util.ArrayList;

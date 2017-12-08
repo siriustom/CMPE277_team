@@ -117,10 +117,10 @@ public class BookCatalogService {
             catalog.getCopies().add(bc);
 
         //us.add(user);
-        bcs.add(catalog);
+        //bcs.add(catalog);
 
-        BookCatalog catalog1 = bcs.queryById("Title14");
+        BookCatalog catalog1 = bcs.queryById("nightmare");
         System.out.println();
-        System.out.println(bcs.isBookExisted("nightmare"));
+        //System.out.println(bcs.isBookExisted("nightmare"));
     }
 }
