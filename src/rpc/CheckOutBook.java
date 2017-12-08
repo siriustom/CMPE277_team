@@ -63,7 +63,10 @@ public class CheckOutBook extends HttpServlet {
 					for (int i = 0; i < num; i++) {
 						BookCopy checkout = avList.remove(0);
 						checkout.setUser(user.getEmail());
-						checkout.setCheckOutDate(new Date());
+						Date c = new Date();
+						Date due = new Date(c.getTime() + (30 * 24 * 60 * 60 * 1000));
+						checkout.setCheckOutDate(c);
+						checkout.setDueDate(due);
 						user.getBooks().add(checkout);
 					}
 				}
