@@ -50,7 +50,6 @@ public class EditBookCatalog extends HttpServlet {
 			String keywords = (String) input.get("keywords");
 			String coverImage = (String) input.get("coverImage");
 			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
-			String copies = (String) input.get("copies");
 
 			String message = "update complete: ";
 			
@@ -66,40 +65,7 @@ public class EditBookCatalog extends HttpServlet {
 			bc.setKeywords(keywords);
 			bc.setCoverImage(coverImage);
 			bc.setLibrarianCreatedUpdated(librarianCreatedUpdated);
-			
-			//find how many copies are available
-			int copyAv = 0;
-			for (BookCopy b : bc.getCopies()) {
-				if (b.getStatus().equals("available")) {
-					copyAv++;
-				}
-			}
-			//copyUpd is updated figure
-			int copyUpd = Integer.parseInt(copies);
-			int copyTotal = bc.getCopies().size();
-			if (copyUpd > copyTotal) {
-				for (int i = 0; i < copyUpd - copyTotal; i++) {
-					bc.getCopies().add(new BookCopy(bc));
-				}
-			} else if (copyUpd < copyTotal) {
-				if ((copyTotal - copyUpd <= copyAv)) {//update only if reduced number is less than available number
-					List<BookCopy> avai = new ArrayList<>();
-					List<BookCopy> unavai = new ArrayList<>();
-					for (BookCopy b : bc.getCopies()) {
-						if (b.getStatus().equals("available")) {
-							avai.add(b);
-						} else {
-							unavai.add(b);
-						}
-					}
-					int addavai = copyAv - (copyTotal - copyUpd);
-					List<BookCopy> sublist = avai.subList(0, addavai);
-					unavai.addAll(sublist);
-					bc.setCopies(unavai);
-				} else {
-					message += "copies update denial due to avail number is less than reduced number";
-				}
-			}
+			db.update(bc);
 			
 			//response
 			msg.put("status", "OK");
