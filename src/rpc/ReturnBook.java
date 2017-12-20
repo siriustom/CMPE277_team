@@ -58,7 +58,7 @@ public class ReturnBook extends HttpServlet {
 			List<BookCopy> avList = new ArrayList<>();
 			List<BookCopy> unavList = new ArrayList<>();
 			for (BookCopy b : bc.getCopies()) {
-				if (b.getStatus() == "available") {
+				if (b.getStatus().equals("available")) {
 					avList.add(b);
 				} else {
 					unavList.add(b);
@@ -66,21 +66,21 @@ public class ReturnBook extends HttpServlet {
 			}
 			int num = Integer.parseInt(number);
 			List<BookCopy> userlist = user.getBooks();
-			for (int i = 0; i < num; i++) {
-				BookCopy re = unavList.remove(0);
-				re.setStatus("available");
-				re.setUser("");
-				re.setCheckOutDate(null);
-				re.setDueDate(null);
-				//update bookcopy
-				db3.update(re);
-				for (int j = 0; j < userlist.size(); j++) {
-					if (re.getBookCatalog().equals(userlist.get(j).getBookCatalog())) {
-						userlist.remove(j);
-						break;
-					}
-				}
-			}
+//			for (int i = 0; i < num; i++) {
+//				BookCopy re = unavList.remove(0);
+//				re.setStatus("available");
+//				re.setUser("");
+//				re.setCheckOutDate(null);
+//				re.setDueDate(null);
+//				//update bookcopy
+//				db3.update(re);
+//				for (int j = 0; j < userlist.size(); j++) {
+//					if (re.getBookCatalog().equals(userlist.get(j).getBookCatalog())) {
+//						userlist.remove(j);
+//						break;
+//					}
+//				}
+//			}
 			//update user
 			user.setBooks(userlist);
 			db.update(user);
@@ -92,8 +92,12 @@ public class ReturnBook extends HttpServlet {
 
 			
 			//response
+			message += "book returned.";
 			msg.put("status", "OK");
 			msg.put("msg", message);
+			msg.put("title", title);
+			msg.put("num", num);
+			
 			RpcHelper.writeJsonObject(response, msg);
 		} catch (JSONException e) {
 			e.printStackTrace();
