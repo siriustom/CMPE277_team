@@ -12,7 +12,9 @@ import org.bson.Document;
 public class MongoDBUtil {
 	public static final String DB_NAME = "library";
 
-	private final static String DB_HOST = "54.200.143.121";
+	//private final static String DB_HOST = "54.200.143.121";
+	private final static String DB_HOST = "13.56.249.240";
+
 	private final static int DB_PORT = 27017;
 
 	private MongoClient mg = null;
