@@ -65,7 +65,7 @@ public class EditBookCatalog extends HttpServlet {
 				message += "this book catalog has books that have been checked out.";
 				msg.put("status", "error");
 			} else if (!email.equals(bc.getLibrarianCreatedUpdated())) {
-				message += bc.getLibrarianCreatedUpdated() + "you are not the librarian who created this catalog";
+				message += email + " you are not the librarian who created this catalog";
 				msg.put("status", "error");
 			} else {
 				bc.setAuthor(author);

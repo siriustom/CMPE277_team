@@ -66,21 +66,22 @@ public class ReturnBook extends HttpServlet {
 			}
 			int num = Integer.parseInt(number);
 			List<BookCopy> userlist = user.getBooks();
-//			for (int i = 0; i < num; i++) {
-//				BookCopy re = unavList.remove(0);
-//				re.setStatus("available");
-//				re.setUser("");
-//				re.setCheckOutDate(null);
-//				re.setDueDate(null);
-//				//update bookcopy
-//				db3.update(re);
-//				for (int j = 0; j < userlist.size(); j++) {
-//					if (re.getBookCatalog().equals(userlist.get(j).getBookCatalog())) {
-//						userlist.remove(j);
-//						break;
-//					}
-//				}
-//			}
+			for (int i = 0; i < num; i++) {
+				BookCopy re = unavList.remove(0);
+				re.setStatus("available");
+				re.setUser("");
+				re.setCheckOutDate(null);
+				re.setDueDate(null);
+				//update bookcopy
+				db3.update(re);
+				for (int j = 0; j < userlist.size(); j++) {
+					if (re.getBookCatalog().equals(userlist.get(j).getBookCatalog())) {
+						userlist.remove(j);
+						break;
+					}
+				}
+			}
+			
 			//update user
 			user.setBooks(userlist);
 			db.update(user);

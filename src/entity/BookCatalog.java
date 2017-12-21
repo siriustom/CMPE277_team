@@ -104,6 +104,10 @@ public class BookCatalog {
 		this.copies = copies;
 	}
 	
+	public void addToWaitlist(String user) {
+		this.waitlist.add(user);
+	}
+	
 	public BookCatalog() {}
 	
 	public BookCatalog(BookCatalogBuilder builder) {

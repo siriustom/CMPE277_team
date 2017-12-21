@@ -4,7 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -86,13 +93,31 @@ public class CheckOutBook extends HttpServlet {
 					msg.put("status", "OK");
 					msg.put("number", num);
 					msg.put("title", title);
-					msg.put("checkoutdate", "12/07/2017");
-					msg.put("duedat", "1/06/2018");
+					msg.put("checkoutdate", "12/20/2017");
+					msg.put("duedat", "1/19/2018");
 					msg.put("user", email);
 					msg.put("msg", message);
+					
+					//send email
+					String text = "Book: " + title + '\n' +
+							"Number: " + num + '\n' +
+							"checkoutdate: " + "12/07/2017" + '\n' +
+							"duedat: " + "1/19/2018" + '\n' +
+							"user: " + email + '\n';
+					sendEmail(text, email);
+				} else {
+					message += "unable to check out book, current bookcopy number must not be larger than 9!";
+					msg.put("msg", message);
+					msg.put("status", "error");
 				}
+			} else if (num > 3) {
+				message += "unable to check out book, check out book number must not be larger than 3!";
+				msg.put("status", "error");
+				msg.put("msg", message);
 			} else {
-				message += "book checkout!";
+				bc.addToWaitlist(email);
+				db2.update(bc);
+				message += "unable to check out book, you have been put to waitlist!";
 				msg.put("status", "error");
 				msg.put("msg", message);
 			}
@@ -102,6 +127,29 @@ public class CheckOutBook extends HttpServlet {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void sendEmail(String text, String to) {
+		// send email
+		String from = "zeningdeng2@gmail.com";
+		String host = "aspmx.l.google.com";
+		Properties properties = System.getProperties();
+		properties.setProperty("mail.smtp.host", host);
+		properties.setProperty("mail.smtp.port", "25");
+		
+		//properties.setProperty("mail.user", "zeningdeng2@gmail.com");
+		//properties.setProperty("mail.password", "zdpassword");
+		Session session = Session.getDefaultInstance(properties);
+		try {
+			MimeMessage e = new MimeMessage(session);
+			e.setFrom(new InternetAddress(from));
+			e.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+			e.setSubject("checkout confirmation:");
+			e.setText(text);
+			Transport.send(e);
+		} catch (MessagingException mex) {
+			mex.printStackTrace();
+		} 
 	}
 
 }

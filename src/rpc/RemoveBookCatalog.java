@@ -46,22 +46,24 @@ public class RemoveBookCatalog extends HttpServlet {
 			
 			// get request parameters for book title
 			String title = (String) input.get("title");
+			String email = (String) input.get("email");
 			String message = "";
 			
 			//communicate with db
 			BookCatalog bc = db.queryById(title);
-			boolean canRemove = true;
-			for (BookCopy b : bc.getCopies()) {
-				if (!b.getStatus().equals("available")) {
-					canRemove = false;
-				}
-			}
-			if (canRemove) {
+			String librarian = bc.getLibrarianCreatedUpdated();
+			if (librarian.equals(email)) {
 				db.remove(title);
-				msg.put("status", "OK");
+				if (!db.isBookExisted(title)) {
+					msg.put("status", "OK");
+					message += "the bookcatalog " + title + " does not exist any more.";
+				} else {
+					msg.put("status", "error");
+					message += "the remove process did not succeed for unknown reason.";
+				}
 			} else {
+				message += email + " you are not the librarian who created the bookcatalog.";
 				msg.put("status", "error");
-				message += "the bookcatalog has some copies that are not available.";
 			}
 			
 			//response
