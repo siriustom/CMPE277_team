@@ -1,4 +1,10 @@
 # CMPE277_team project backend
+## Team member:
+- Shaozhuo Jia   
+- Xiaoran Lin   linxiaoran0210@gmail.com 011824657
+- Shihan Wang   
+- Zening Deng   zening.deng@sjsu.edu 012462619
+
 ## API: 
 - **Remember to put  "http://54.200.143.121/CMPE277"  as a prefix while calling API**
 - **/RequestSignUp**              handles a request for sign up
