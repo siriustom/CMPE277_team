@@ -1,5 +1,6 @@
 # CMPE277_team project backend
 ## Project name: Library Master
+## Github: https://github.com/siriustom/CMPE277_team
 ## Team member:
 - Shaozhuo Jia   
 - Xiaoran Lin    linxiaoran0210@gmail.com 011824657
