@@ -6,8 +6,9 @@
 - **/SignIn**                     handles sign in
 - **/search**                     handles book catalog search
 - **/CheckOutBook**               handles book check out
-- **/CreatBookCatalog**          handles book catalog creation
+- **/CreatBookCatalog**           handles book catalog creation
 - **/EditBookCataLog**            handles book catalog editing
 - **/RemoveBookCatalog**          handles book catalog removing request
 - **/RenewBook**                  handles borrowed book renew request
 - **/ReturnBook**                 handles book returning
+- **/changeDueDate**              handles set due date request      
