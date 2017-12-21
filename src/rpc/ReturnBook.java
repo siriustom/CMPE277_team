@@ -72,6 +72,7 @@ public class ReturnBook extends HttpServlet {
 				re.setUser("");
 				re.setCheckOutDate(null);
 				re.setDueDate(null);
+				avList.add(re);
 				//update bookcopy
 				db3.update(re);
 				for (int j = 0; j < userlist.size(); j++) {

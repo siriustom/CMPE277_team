@@ -53,13 +53,13 @@ public class RemoveBookCatalog extends HttpServlet {
 			BookCatalog bc = db.queryById(title);
 			String librarian = bc.getLibrarianCreatedUpdated();
 			if (librarian.equals(email)) {
-				db.remove(title);
-				if (!db.isBookExisted(title)) {
+				if (bc.getCopies().get(0).getStatus().equals("available")) {
+					db.remove(title);
 					msg.put("status", "OK");
 					message += "the bookcatalog " + title + " does not exist any more.";
 				} else {
 					msg.put("status", "error");
-					message += "the remove process did not succeed for unknown reason.";
+					message += "bookcatalog has books that have been checked out.";
 				}
 			} else {
 				message += email + " you are not the librarian who created the bookcatalog.";
