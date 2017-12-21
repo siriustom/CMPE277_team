@@ -18,6 +18,7 @@ import entity.BookCopy;
 import entity.User;
 import service.BookCatalogService;
 import service.BookCopyService;
+import service.NotificationManager;
 import service.UserService;
 
 /**
@@ -60,14 +61,21 @@ public class changeDueDate extends HttpServlet {
 			String email = (String) input.get("email");
 			String message = "";
 			
+			NotificationManager nm = NotificationManager.getInstance();
 			int num = Integer.parseInt(number);
 			User user = db.queryById(email);
 			List<BookCopy> booklist = user.getBooks();
 			for (BookCopy b : booklist) {
+				//update bookcopy
 				Date oldDue = b.getDueDate();
-				Date newDue = new Date(oldDue.getTime() + ( num * 24 * 60 * 60 * 1000));
+				Date newDue = new Date(oldDue.getTime() - ( num * 24 * 60 * 60 * 1000));
 				b.setDueDate(newDue);
 				db3.update(b);
+				
+				//set duedate notification
+				nm.registerTask(b);
+				
+				//update related bookcatalog
 				String title = b.getBookCatalog();
 				BookCatalog bc = db2.queryById(title);
 				List<BookCopy> catalogList = bc.getCopies();
@@ -80,9 +88,10 @@ public class changeDueDate extends HttpServlet {
 				bc.setCopies(catalogList);
 				db2.update(bc);
 			}
+			//update user
 			user.setBooks(booklist);
 			db.update(user);
-			message += "book checkout";
+			message += "due date changed";
 			msg.put("status", "OK");
 			msg.put("msg", message);
 			

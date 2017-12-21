@@ -83,12 +83,13 @@ public class ReturnBook extends HttpServlet {
 				avList.add(re);
 				//update bookcopy
 				db3.update(re);
+				//update user's book list
 				for (int j = 0; j < userlist.size(); j++) {
 					if (re.getBookCatalog().equals(userlist.get(j).getBookCatalog())) {
 						userlist.remove(j);
 						break;
 					}
-				}
+				}				
 			}
 			
 			//update user
@@ -113,6 +114,13 @@ public class ReturnBook extends HttpServlet {
 			msg.put("msg", message);
 			msg.put("title", title);
 			msg.put("num", num);
+			
+			//notify waitlist
+			if (!bc.getWaitlist().isEmpty()) {
+				String notify = bc.getWaitlist().get(0);
+				String t = "book " + title + " is available to you.";
+				sendEmail(t, notify);
+			}
 			
 			RpcHelper.writeJsonObject(response, msg);
 		} catch (JSONException e) {
