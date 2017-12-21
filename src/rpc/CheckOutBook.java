@@ -58,7 +58,7 @@ public class CheckOutBook extends HttpServlet {
 			List<BookCopy> avList = new ArrayList<>();
 			List<BookCopy> unavList = new ArrayList<>();
 			for (BookCopy b : bc.getCopies()) {
-				if (b.getStatus() == "available") {
+				if (b.getStatus().equals("available")) {
 					avList.add(b);
 				} else {
 					unavList.add(b);
@@ -82,10 +82,17 @@ public class CheckOutBook extends HttpServlet {
 					bc.setCopies(unavList);
 					db.update(user);
 					db2.update(bc);
+					message += "book checkout";
 					msg.put("status", "OK");
+					msg.put("number", num);
+					msg.put("title", title);
+					msg.put("checkoutdate", "12/07/2017");
+					msg.put("duedat", "1/06/2018");
+					msg.put("user", email);
 					msg.put("msg", message);
 				}
 			} else {
+				message += "book checkout!";
 				msg.put("status", "error");
 				msg.put("msg", message);
 			}

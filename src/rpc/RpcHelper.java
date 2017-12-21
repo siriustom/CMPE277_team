@@ -40,6 +40,7 @@ public class RpcHelper {
 	public static void writeJsonObject(HttpServletResponse response, JSONObject obj) {
 		try {
 			response.setContentType("application/json");
+			response.setCharacterEncoding("utf-8");
 			response.addHeader("Access-Control-Allow-Origin", "*");
 			PrintWriter out = response.getWriter();
 			out.print(obj);
