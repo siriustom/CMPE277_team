@@ -53,29 +53,35 @@ public class EditBookCatalog extends HttpServlet {
 			String yearOfPub = (String) input.get("yearOfPub");
 			String location = (String) input.get("location");
 			String keywords = (String) input.get("keywords");
-			String coverImage = (String) input.get("coverImage");
 			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
 			String email = (String) input.get("email");
 
 			String message = "";
 			
-			
+
 			//communicate to db
 			BookCatalog bc = db2.queryById(title);
-			bc.setAuthor(author);
-			bc.setTitle(title);
-			bc.setCallNumber(Integer.parseInt(callNumber));
-			bc.setPublisher(publisher);
-			bc.setYearOfPublication(Integer.parseInt(yearOfPub));
-			bc.setLocationInLibrary(location);
-			bc.setKeywords(keywords);
-			bc.setCoverImage(coverImage);
-			bc.setLibrarianCreatedUpdated(librarianCreatedUpdated);
-			
-			db2.update(bc);
+			if (bc.getWaitlist().size() != 0) {
+				message += "this book catalog has books that have been checked out.";
+				msg.put("status", "error");
+			} else if (!email.equals(bc.getLibrarianCreatedUpdated())) {
+				message += bc.getLibrarianCreatedUpdated() + "you are not the librarian who created this catalog";
+				msg.put("status", "error");
+			} else {
+				bc.setAuthor(author);
+				bc.setTitle(title);
+				bc.setCallNumber(Integer.parseInt(callNumber));
+				bc.setPublisher(publisher);
+				bc.setYearOfPublication(Integer.parseInt(yearOfPub));
+				bc.setLocationInLibrary(location);
+				bc.setKeywords(keywords);
+				bc.setLibrarianCreatedUpdated(librarianCreatedUpdated);
+				db2.update(bc);
+				message += "update is complete.";
+				msg.put("status", "OK");
+			}
 			
 			//response
-			msg.put("status", "OK");
 			msg.put("msg", message);
 			RpcHelper.writeJsonObject(response, msg);
 		} catch (JSONException e) {
