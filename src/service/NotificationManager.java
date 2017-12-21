@@ -45,6 +45,13 @@ public class NotificationManager {
 
 
     public void registerTask(BookCopy bc){
+        String copyId = bc.getCopyId();
+        if(timerMap.containsKey(copyId)){
+            ReturnBookTimer timer = getTimer(copyId);
+            timer.cancel();
+            timerMap.remove(timer);
+            }
+
         ReturnBookTimer timer = new ReturnBookTimer(bc);
         timerMap.put(bc.getCopyId(),timer);
     }
