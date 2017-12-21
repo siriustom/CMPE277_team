@@ -4,7 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -65,6 +72,7 @@ public class ReturnBook extends HttpServlet {
 				}
 			}
 			int num = Integer.parseInt(number);
+
 			List<BookCopy> userlist = user.getBooks();
 			for (int i = 0; i < num; i++) {
 				BookCopy re = unavList.remove(0);
@@ -92,7 +100,13 @@ public class ReturnBook extends HttpServlet {
 			bc.setCopies(avList);
 			db2.update(bc);
 
+			String text = "Book: " + title + '\n' +
+					"Number: " + num + '\n' +
+					"returndate: " + "12/07/2017" + '\n' +
+					"duedat: " + "1/19/2018" + '\n' +
+					"user: " + email + '\n';
 			
+			sendEmail(text, email);
 			//response
 			message += "book returned.";
 			msg.put("status", "OK");
@@ -104,6 +118,29 @@ public class ReturnBook extends HttpServlet {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void sendEmail(String text, String to) {
+		// send email
+		String from = "zeningdeng2@gmail.com";
+		String host = "aspmx.l.google.com";
+		Properties properties = System.getProperties();
+		properties.setProperty("mail.smtp.host", host);
+		properties.setProperty("mail.smtp.port", "25");
+		
+		//properties.setProperty("mail.user", "zeningdeng2@gmail.com");
+		//properties.setProperty("mail.password", "zdpassword");
+		Session session = Session.getDefaultInstance(properties);
+		try {
+			MimeMessage e = new MimeMessage(session);
+			e.setFrom(new InternetAddress(from));
+			e.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+			e.setSubject("return confirmation:");
+			e.setText(text);
+			Transport.send(e);
+		} catch (MessagingException mex) {
+			mex.printStackTrace();
+		} 
 	}
 
 }

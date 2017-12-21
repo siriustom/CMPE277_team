@@ -26,6 +26,7 @@ import entity.BookCopy;
 import entity.User;
 import service.BookCatalogService;
 import service.BookCopyService;
+import service.NotificationManager;
 import service.UserService;
 
 /**
@@ -71,6 +72,7 @@ public class CheckOutBook extends HttpServlet {
 					unavList.add(b);
 				}
 			}
+			NotificationManager nm = NotificationManager.getInstance();
 			int num = Integer.parseInt(number);
 			if (avList.size() >= num && num <= 3) {
 				if (user.getBooks().size() + num <= 9) {
@@ -82,11 +84,14 @@ public class CheckOutBook extends HttpServlet {
 						checkout.setCheckOutDate(c);
 						checkout.setDueDate(due);
 						checkout.setStatus("borrowed");
+						unavList.add(checkout);
+						//set duedate notification
+						nm.registerTask(checkout);
 						db3.update(checkout);
 						user.getBooks().add(checkout);
 					}
-					unavList.addAll(avList);
-					bc.setCopies(unavList);
+					avList.addAll(unavList);
+					bc.setCopies(avList);
 					db.update(user);
 					db2.update(bc);
 					message += "book checkout";
@@ -105,6 +110,7 @@ public class CheckOutBook extends HttpServlet {
 							"duedat: " + "1/19/2018" + '\n' +
 							"user: " + email + '\n';
 					sendEmail(text, email);
+					
 				} else {
 					message += "unable to check out book, current bookcopy number must not be larger than 9!";
 					msg.put("msg", message);
