@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.*;
 
 import entity.BookCatalog;
 import entity.BookCopy;
@@ -52,7 +53,7 @@ public class CreatBookCatalog extends HttpServlet {
 			String location = (String) input.get("location");
 			String keywords = (String) input.get("keywords");
 			String librarianCreatedUpdated = (String) input.get("librarianCreatedUpdated");
-			JSONObject[] copies = (JSONObject[]) input.get("copies");
+			JSONArray copies = (JSONArray) input.get("copies");
 			String message = "";
 			
 			if (!db.isBookExisted(title)) {
@@ -62,7 +63,7 @@ public class CreatBookCatalog extends HttpServlet {
 				setPublisher(publisher).setYearOfPublication(Integer.parseInt(yearOfPub)).setLocationInLibrary(location).
 				setKeywords(keywords).setLibrarianCreatedUpdated(librarianCreatedUpdated).build();
 				List<BookCopy> copylist = new ArrayList<>();
-				for (int i = 0; i < copies.length; i++) {
+				for (int i = 0; i < copies.length(); i++) {
 					BookCopy book = new BookCopy(bc);
 					//call book copy service API
 					db2.add(book);

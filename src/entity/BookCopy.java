@@ -3,6 +3,7 @@ package entity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -26,6 +27,7 @@ public class BookCopy{
     }
     
     public BookCopy(BookCatalog bookCatalog) {
+    		this.copyId = UUID.randomUUID().toString();
     		this.status = "available";
     		this.user = "";
     		this.bookCatalog = bookCatalog.getTitle();

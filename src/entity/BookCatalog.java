@@ -255,10 +255,10 @@ public class BookCatalog {
 		this.librarianCreatedUpdated = String.valueOf(dbObject.get("librarianCreatedUpdated"));
 
 		List<String> waitList = (List<String>)dbObject.get("waitlist");
-		if(waitList!=null){
+		if(waitList != null) {
 
-			for(String str:waitList){
-				waitlist.add(str);
+			for(String str : waitList){
+				this.waitlist.add(str);
 			}
 		}
 
