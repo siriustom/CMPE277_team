@@ -2,7 +2,7 @@
 ## Project name: Library Master
 ## Github: https://github.com/siriustom/CMPE277_team
 ## Team member:
-- Shaozhuo Jia   
+- Shaozhuo Jia   shaozhuo.jia@sjsu.edu 012413999
 - Xiaoran Lin    linxiaoran0210@gmail.com 011824657
 - Shihan Wang    shihan.wang@sjsu.edu 006916364
 - Zening Deng    zening.deng@sjsu.edu 012462619
