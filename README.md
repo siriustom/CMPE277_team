@@ -1,4 +1,5 @@
 # CMPE277_team project backend
+## Project name: Library Master
 ## Team member:
 - Shaozhuo Jia   
 - Xiaoran Lin   linxiaoran0210@gmail.com 011824657
