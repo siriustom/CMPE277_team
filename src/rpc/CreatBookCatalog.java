@@ -69,6 +69,7 @@ public class CreatBookCatalog extends HttpServlet {
 					db2.add(book);
 					copylist.add(book);
 				}
+				bc.setCopies(copylist);
 				db.add(bc);
 				message += "book catalog has been created.";
 				msg.put("status", "OK");
