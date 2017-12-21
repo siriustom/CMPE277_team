@@ -66,7 +66,7 @@ public class HttpUtil {
        try {
 
             JSONObject jsonObj;
-            String jsonStr = "{\"interests\":["+email+"],\"apns\":{\"aps\":{\"alert\":{\"title\":\"Book Due Alert\",\"body\":\"Your book will due on "+dueDate+"!\"}}}}";
+            String jsonStr = "{\"interests\":["+email+"],\"apns\":{\"aps\":{\"alert\":{\"title\":\"Book Due Alert\",\"body\":\"Your book will due within 5 days!\"}}}}";
             jsonObj = new JSONObject(jsonStr);
             return jsonObj;
         }catch (JSONException e) {
